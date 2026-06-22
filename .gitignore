@@ -1,0 +1,16 @@
+.next
+node_modules
+.env
+.env.local
+dist
+coverage
+*.log
+
+# Dev local
+.next-dev
+.DS_Store
+tsconfig.tsbuildinfo
+
+# Secrets
+.env.*
+!.env.example
