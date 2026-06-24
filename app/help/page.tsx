@@ -1,10 +1,15 @@
 import { HelpCircle, MessageCircle, Send } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
+import { getClientAccessState } from "@/lib/client-access-state";
 import { NESTO_WHATSAPP_CONTACT_URL } from "@/lib/nesto-contact";
 
-export default function HelpPage() {
+export default async function HelpPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   return (
     <AppShell>
       <PageHeader

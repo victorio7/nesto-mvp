@@ -137,7 +137,7 @@ export async function getInstallationData(): Promise<InstallationData> {
         status: extraSourcesStatus(integrations, steps.extra_sources)
       },
       teamInstallationStatus,
-      dashboardUnlocked: teamInstallationStatus === "installed" && ["connected", "in_progress"].includes(steps.final_test),
+      dashboardUnlocked: teamInstallationStatus === "installed",
       steps
     };
   } catch (error) {

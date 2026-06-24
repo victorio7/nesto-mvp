@@ -14,3 +14,6 @@ tsconfig.tsbuildinfo
 # Secrets
 .env.*
 !.env.example
+supabase/cleanup-*.sql
+supabase/reset-*.sql
+*.zip

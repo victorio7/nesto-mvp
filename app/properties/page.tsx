@@ -2,9 +2,11 @@ import Link from "next/link";
 import { ArrowRight, Building2, UsersRound } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/Button";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
+import { getClientAccessState } from "@/lib/client-access-state";
 import { getNestoData, type PropertyMemory } from "@/lib/nesto-data";
 
 export const dynamic = "force-dynamic";
@@ -18,6 +20,9 @@ const filters = [
 ];
 
 export default async function PropertiesPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   const data = await getNestoData();
 
   return (

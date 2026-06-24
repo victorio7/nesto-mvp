@@ -1,12 +1,17 @@
 import { notFound } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/Button";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
+import { getClientAccessState } from "@/lib/client-access-state";
 import { getNestoData } from "@/lib/nesto-data";
 
 export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   const { id } = await params;
   const data = await getNestoData();
   const property = data.properties.find((item) => item.id === id);

@@ -1,13 +1,18 @@
 import { Copy } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/Button";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { demoContacts, demoMatches, demoProperties, getContact, getProperty } from "@/lib/demo-data";
 import { generateFollowupFallback } from "@/lib/ai/followup-generator";
+import { getClientAccessState } from "@/lib/client-access-state";
 
-export default function FollowupsPage() {
+export default async function FollowupsPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   const followups = demoMatches.map((match) => {
     const contact = getContact(match.contact_id) ?? demoContacts[0];
     const property = getProperty(match.property_id) ?? demoProperties[0];

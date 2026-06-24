@@ -1,11 +1,16 @@
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/Button";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { demoAiActions, getContactName, getPropertyTitle } from "@/lib/demo-data";
+import { getClientAccessState } from "@/lib/client-access-state";
 
-export default function ActionsPage() {
+export default async function ActionsPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   return (
     <AppShell>
       <PageHeader

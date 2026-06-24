@@ -16,7 +16,13 @@ const protectedPrefixes = [
   "/settings",
   "/contacts",
   "/properties",
-  "/whatsapp-simulator"
+  "/whatsapp-simulator",
+  "/help",
+  "/followups",
+  "/actions",
+  "/matches",
+  "/billing",
+  "/messages"
 ];
 
 export function middleware(request: NextRequest) {
@@ -54,7 +60,19 @@ export const config = {
     "/settings/:path*",
     "/contacts/:path*",
     "/properties/:path*",
-    "/whatsapp-simulator/:path*"
+    "/whatsapp-simulator/:path*",
+    "/help",
+    "/help/:path*",
+    "/followups",
+    "/followups/:path*",
+    "/actions",
+    "/actions/:path*",
+    "/matches",
+    "/matches/:path*",
+    "/billing",
+    "/billing/:path*",
+    "/messages",
+    "/messages/:path*"
   ]
 };
 

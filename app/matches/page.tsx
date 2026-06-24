@@ -1,11 +1,16 @@
 import { AppShell } from "@/components/AppShell";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { DataTable } from "@/components/DataTable";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { demoMatches, getContactName, getPropertyTitle } from "@/lib/demo-data";
+import { getClientAccessState } from "@/lib/client-access-state";
 
-export default function MatchesPage() {
+export default async function MatchesPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   return (
     <AppShell>
       <PageHeader

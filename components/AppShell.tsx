@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Bot,
   ContactRound,
@@ -7,6 +9,7 @@ import {
   Plug
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 const navItems = [
@@ -18,6 +21,8 @@ const navItems = [
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
   return (
     <div className="min-h-screen bg-paper">
       <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-line bg-white px-4 py-5 lg:block">
@@ -36,7 +41,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             const Icon = item.icon;
             return (
               <Link
-                className="flex min-h-10 items-center gap-3 rounded-md px-3 text-sm font-semibold text-gray-700 transition hover:bg-paper hover:text-ink"
+                className={`flex min-h-10 items-center gap-3 rounded-md px-3 text-sm font-semibold transition ${
+                  pathname === item.href ? "bg-pine text-white" : "text-gray-700 hover:bg-paper hover:text-ink"
+                }`}
                 href={item.href}
                 key={item.href}
               >

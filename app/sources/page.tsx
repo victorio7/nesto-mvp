@@ -1,8 +1,10 @@
 import { CalendarDays, Globe2, Instagram, Mail, MessageCircle, Plug, Send } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
+import { getClientAccessState } from "@/lib/client-access-state";
 import { NESTO_WHATSAPP_CONTACT_URL } from "@/lib/nesto-contact";
 import { getInstallationData, type SimpleInstallStatus } from "@/lib/installation-data";
 import { getNestoData } from "@/lib/nesto-data";
@@ -18,6 +20,9 @@ type ClientConnection = {
 };
 
 export default async function SourcesPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   const [installation, nestoData] = await Promise.all([getInstallationData(), getNestoData()]);
   const calendarStatus = statusFromLiveConnection(nestoData.connections.find((item) => item.integration_type === "google_calendar")?.status);
   const connections: ClientConnection[] = [

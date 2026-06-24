@@ -67,7 +67,7 @@ export function InstallationClient({
 
     const nextStatus: SimpleInstallStatus = action === "help" ? "needs_help" : action === "test" ? "in_progress" : options?.skip ? "skipped" : "connected";
     setSteps((current) => current.map((item, index) => index === currentIndex ? { ...item, status: nextStatus } : item));
-    setNotice(result.message || (result.persisted ? "Informations recues." : "Informations notees pour l'installation."));
+    setNotice(result.message || (result.persisted ? "Informations reçues." : "Informations notees pour l'installation."));
     setSaving(false);
 
     if (action === "test") {
@@ -89,7 +89,7 @@ export function InstallationClient({
       <section className="rounded-lg border border-line bg-white p-5 shadow-panel sm:p-7">
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between gap-3">
-            <p className="text-xs font-black uppercase tracking-normal text-wood">Etape {currentIndex + 1} sur {steps.length}</p>
+            <p className="text-xs font-black uppercase tracking-normal text-wood">Étape {currentIndex + 1} sur {steps.length}</p>
             <p className="text-xs font-black text-pine">{statusLabel(currentStep.status)}</p>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-[#edf1ea]">
@@ -149,13 +149,13 @@ export function InstallationClient({
 
           {!isConfirmation ? (
             <Button onClick={() => saveCurrentStep("help")} variant="secondary" disabled={saving}>
-              <HelpCircle size={16} /> Demander l'aide de l'equipe
+              <HelpCircle size={16} /> Demander l'aide de l'équipe
             </Button>
           ) : null}
         </div>
 
         {requiredMissing && !isConfirmation ? (
-          <p className="mt-3 text-xs font-semibold text-gray-500">Ce champ est necessaire pour continuer. L'equipe peut aussi vous aider.</p>
+          <p className="mt-3 text-xs font-semibold text-gray-500">Ce champ est nécessaire pour continuer. L'équipe peut aussi vous aider.</p>
         ) : null}
       </section>
     </div>
@@ -176,12 +176,12 @@ export function FinalTestButton() {
         action: "test",
         data: {
           requested: "yes",
-          summary: "Informations recues. Test final demande."
+        summary: "Informations reçues. Test final demande."
         }
       })
     });
     const result = await response.json().catch(() => ({})) as { message?: string };
-    setNotice(result.message || "Informations recues. L'equipe Nesto verifie votre installation. Delai moyen : moins de 24h.");
+    setNotice(result.message || "Informations reçues. L'équipe Nesto verifie votre installation. Delai moyen : moins de 24h.");
     setSaving(false);
   }
 
@@ -201,8 +201,8 @@ function ConfirmationContent() {
       <div className="flex gap-3">
         <CheckCircle2 className="mt-0.5 shrink-0 text-pine" size={20} />
         <div className="grid gap-2 text-sm font-semibold leading-6 text-gray-700">
-          <p className="font-black text-ink">Merci, vos informations sont bien recues.</p>
-          <p>L'equipe Nesto verifie votre installation.</p>
+          <p className="font-black text-ink">Merci, vos informations sont bien reçues.</p>
+          <p>L'équipe Nesto verifie votre installation.</p>
           <p>Delai moyen : moins de 24h.</p>
           <p>Vous recevrez un message WhatsApp ou un email des que Nesto est pret.</p>
           <p>Votre mois gratuit commence lorsque Nesto est installe et pret a etre teste avec vous.</p>
@@ -220,7 +220,7 @@ function WaitingCard({ onEdit }: { onEdit: () => void }) {
           <CheckCircle2 size={22} />
         </span>
         <p className="mt-5 text-xs font-black uppercase tracking-normal text-wood">Installation en cours</p>
-        <h2 className="mt-2 text-2xl font-black text-ink">Notre equipe finalise la connexion de vos outils.</h2>
+        <h2 className="mt-2 text-2xl font-black text-ink">Notre équipe finalise la connexion de vos outils.</h2>
         <p className="mx-auto mt-3 max-w-md text-sm font-semibold leading-6 text-gray-700">
           Vous serez prevenu par WhatsApp ou email des que Nesto sera pret. Delai moyen : moins de 24h.
         </p>
@@ -232,7 +232,7 @@ function WaitingCard({ onEdit }: { onEdit: () => void }) {
             rel="noreferrer"
             target="_blank"
           >
-            Contacter l'equipe Nesto
+            Contacter l'équipe Nesto
           </a>
         </div>
       </section>
@@ -270,7 +270,7 @@ function buildSteps(data: InstallationData): WizardStep[] {
       icon: MessageCircle,
       primaryLabel: "Continuer",
       fields: [
-        { key: "businessPhone", label: "Numero WhatsApp professionnel", value: data.whatsappProspect.phone, placeholder: "+689 ..." }
+        { key: "businessPhone", label: "Numéro WhatsApp professionnel", value: data.whatsappProspect.phone, placeholder: "+689 ..." }
       ]
     },
     {
@@ -281,7 +281,7 @@ function buildSteps(data: InstallationData): WizardStep[] {
       icon: MessageCircle,
       primaryLabel: "Continuer",
       fields: [
-        { key: "agentPhone", label: "Numero WhatsApp personnel ou interne", value: data.whatsappAgent.phone || data.agency.phone, placeholder: "+689 ..." }
+        { key: "agentPhone", label: "Numéro WhatsApp personnel ou interne", value: data.whatsappAgent.phone || data.agency.phone, placeholder: "+689 ..." }
       ]
     },
     {
@@ -299,7 +299,7 @@ function buildSteps(data: InstallationData): WizardStep[] {
     {
       key: "agency_website",
       title: "Site de l'agence",
-      description: "Collez simplement l'adresse du site de votre agence. Notre equipe verifiera les pages utiles.",
+      description: "Collez simplement l'adresse du site de votre agence. Notre équipe verifiera les pages utiles.",
       status: data.website.status,
       icon: Building2,
       primaryLabel: "Continuer",
@@ -309,7 +309,7 @@ function buildSteps(data: InstallationData): WizardStep[] {
     },
     {
       key: "social_sources",
-      title: "Reseaux sociaux",
+      title: "Réseaux sociaux",
       description: "Ajoutez les reseaux ou vous recevez des demandes. Vous pourrez aussi les connecter plus tard.",
       status: data.socialSources.status,
       icon: Share2,
@@ -324,7 +324,7 @@ function buildSteps(data: InstallationData): WizardStep[] {
     {
       key: "confirmation",
       title: "Confirmation",
-      description: "Nesto peut maintenant passer en verification equipe avant le test final.",
+      description: "Nesto peut maintenant passer en verification équipe avant le test final.",
       status: data.steps.final_test ?? "todo",
       icon: CheckCircle2,
       primaryLabel: "Demander le test final",

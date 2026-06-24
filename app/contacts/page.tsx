@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { ArrowRight, Flame, Search, UserRound } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
+import { getClientAccessState } from "@/lib/client-access-state";
 import { getNestoData } from "@/lib/nesto-data";
 import type { Contact } from "@/lib/types";
 
@@ -20,6 +22,9 @@ const filters = [
 ];
 
 export default async function ContactsPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   const data = await getNestoData();
 
   return (

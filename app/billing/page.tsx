@@ -1,10 +1,12 @@
 import { CheckCircle2, MessageCircle } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Button } from "@/components/Button";
+import { ClientWaitingScreen } from "@/components/ClientAccessScreens";
 import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { demoSubscription } from "@/lib/demo-data";
+import { getClientAccessState } from "@/lib/client-access-state";
 import { BillingCheckout } from "./BillingCheckout";
 
 const included = [
@@ -18,7 +20,10 @@ const included = [
   "support installation"
 ];
 
-export default function BillingPage() {
+export default async function BillingPage() {
+  const accessState = await getClientAccessState();
+  if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
+
   return (
     <AppShell>
       <PageHeader

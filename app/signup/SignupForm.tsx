@@ -84,10 +84,6 @@ export function SignupForm() {
       }
 
       const redirectTo = payload.redirectTo || "/installation?trial=active";
-      persistSignupSessionCookies({
-        agencyId: payload.agency_id,
-        agentUserId: payload.agent_user_id
-      });
       window.location.assign(redirectTo);
     } catch (signupError) {
       console.error("Nesto signup request failed", signupError);
@@ -103,7 +99,7 @@ export function SignupForm() {
       onSubmit={submit}
     >
       <label className="block text-sm font-bold">
-        Prenom
+        Prénom
         <input
           className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
           onChange={(event) => setForm((current) => ({ ...current, firstName: event.target.value }))}
@@ -134,7 +130,7 @@ export function SignupForm() {
         />
       </label>
       <label className="block text-sm font-bold">
-        Numero WhatsApp
+        Numéro WhatsApp
         <input
           className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
           onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
@@ -149,7 +145,7 @@ export function SignupForm() {
         <input
           className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
           onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
-          placeholder="Minimum 8 caracteres"
+          placeholder="Minimum 8 caractères"
           required
           type="password"
           value={form.password}
@@ -167,7 +163,7 @@ export function SignupForm() {
         />
       </label>
       <label className="block text-sm font-bold">
-        Nom agence
+        Nom de l'agence
         <input
           className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
           onChange={(event) => setForm((current) => ({ ...current, agencyName: event.target.value }))}
@@ -201,21 +197,9 @@ export function SignupForm() {
           {loading ? "Création de votre espace…" : "Créer mon compte et continuer"}
         </button>
         <p className="mt-3 text-center text-xs font-semibold leading-5 text-gray-500">
-          Deja inscrit ? <Link className="font-black text-pine" href="/login">Se connecter</Link>
+          Déjà inscrit ? <Link className="font-black text-pine" href="/login">Se connecter</Link>
         </p>
       </div>
     </form>
   );
-}
-
-function persistSignupSessionCookies(input: { agencyId?: string; agentUserId?: string }) {
-  if (!input.agencyId || !input.agentUserId) return;
-
-  const maxAge = 60 * 60 * 24 * 7;
-  const sameSite = "SameSite=Lax";
-  const path = "Path=/";
-  document.cookie = `immopilot_session=active; ${path}; Max-Age=${maxAge}; ${sameSite}`;
-  document.cookie = `immopilot_agency_id=${encodeURIComponent(input.agencyId)}; ${path}; Max-Age=${maxAge}; ${sameSite}`;
-  document.cookie = `nesto_agency_id=${encodeURIComponent(input.agencyId)}; ${path}; Max-Age=${maxAge}; ${sameSite}`;
-  document.cookie = `nesto_agent_user_id=${encodeURIComponent(input.agentUserId)}; ${path}; Max-Age=${maxAge}; ${sameSite}`;
 }
