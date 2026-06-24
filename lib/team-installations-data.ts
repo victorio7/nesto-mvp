@@ -1,4 +1,5 @@
 import "server-only";
+import { getNestoReadyEmail, sendEmail } from "@/lib/email/send-email";
 import { createSupabaseAdminClientOrNull } from "@/lib/supabase/admin";
 import { isTeamAccessEnabled } from "@/lib/team-auth";
 
@@ -391,6 +392,14 @@ export async function updateTeamInstallationStatus(agentId: string, status: Team
     );
 
     if (finalTestResult.error) return { ok: false, message: getErrorMessage(finalTestResult.error) };
+
+    if (text(existingData.global_status) !== "installed") {
+      const readyEmail = getNestoReadyEmail(firstNameFrom(agent.name));
+      await sendEmail({
+        to: agent.email,
+        ...readyEmail
+      });
+    }
   }
 
   return { ok: true, message: `Installation marquee : ${globalStatusLabel(status)}.` };
@@ -458,27 +467,33 @@ function teamInstallationStepKeyForAgent(agentId: string) {
 }
 
 async function findAgentById(supabase: SupabaseAdmin, agentId: string) {
-  const userResult = await readRows(supabase.from("agency_users").select("id, agency_id, full_name").eq("id", agentId).limit(1));
+  const userResult = await readRows(supabase.from("agency_users").select("id, agency_id, full_name, email").eq("id", agentId).limit(1));
   const user = asRecord(userResult.rows[0]);
   if (text(user.id) && text(user.agency_id)) {
     return {
       id: text(user.id),
       agencyId: text(user.agency_id),
-      name: text(user.full_name)
+      name: text(user.full_name),
+      email: text(user.email)
     };
   }
 
-  const profileResult = await readRows(supabase.from("profiles").select("id, agency_id, full_name").eq("id", agentId).limit(1));
+  const profileResult = await readRows(supabase.from("profiles").select("id, agency_id, full_name, email").eq("id", agentId).limit(1));
   const profile = asRecord(profileResult.rows[0]);
   if (text(profile.id) && text(profile.agency_id)) {
     return {
       id: text(profile.id),
       agencyId: text(profile.agency_id),
-      name: text(profile.full_name)
+      name: text(profile.full_name),
+      email: text(profile.email)
     };
   }
 
   return null;
+}
+
+function firstNameFrom(fullName: string) {
+  return fullName.split(/\s+/).filter(Boolean)[0] || "bonjour";
 }
 
 function mergeAgentRows({

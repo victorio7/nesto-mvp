@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { after, NextResponse } from "next/server";
 import {
   DEMO_AGENT_USER_ID,
   DEMO_AGENCY_COOKIE,
@@ -6,6 +6,7 @@ import {
   NESTO_AGENCY_COOKIE,
   NESTO_AGENT_USER_COOKIE
 } from "@/lib/auth/session";
+import { getWelcomeEmail, sendEmail } from "@/lib/email/send-email";
 import { validateSignupInput } from "@/lib/security/validation";
 import { createSupabaseAdminClientOrNull } from "@/lib/supabase/admin";
 
@@ -22,12 +23,27 @@ export async function POST(request: Request) {
   let agentUserId = DEMO_AGENT_USER_ID;
 
   if (supabase) {
+    const existingAccount = await findExistingSignupAccount(supabase, parsed.value.email, parsed.value.phone);
+    if (!existingAccount.ok) {
+      return NextResponse.json(
+        { error: "Une erreur est survenue. Contactez l’équipe Nesto si le problème continue." },
+        { status: 500 }
+      );
+    }
+    if (existingAccount.exists) {
+      const error = existingAccount.reason === "phone"
+        ? "Ce numéro WhatsApp est déjà utilisé. Connectez-vous ou contactez l’équipe Nesto."
+        : "Ce compte existe déjà. Connectez-vous.";
+      return NextResponse.json({ error }, { status: 409 });
+    }
+
     const agency = await findOrCreateAgency(supabase, {
       agencyName: parsed.value.agencyName,
       websiteUrl: parsed.value.websiteUrl
     });
 
     if (!agency.ok) {
+      logSignupError("agency_create", agency.error);
       return NextResponse.json({ error: "Impossible de creer l'agence." }, { status: 500 });
     }
 
@@ -41,6 +57,7 @@ export async function POST(request: Request) {
     });
 
     if (!agentUser.ok) {
+      logSignupError("agent_create", agentUser.error);
       return NextResponse.json({ error: "Impossible de creer l'espace agent." }, { status: 500 });
     }
 
@@ -54,6 +71,7 @@ export async function POST(request: Request) {
     });
 
     if (!profile.ok) {
+      logSignupError("profile_create", profile.error);
       return NextResponse.json({ error: "Impossible de préparer le profil agent." }, { status: 500 });
     }
 
@@ -62,6 +80,7 @@ export async function POST(request: Request) {
 
     const trial = await ensureSimulatedTrial(supabase, agencyId);
     if (!trial.ok) {
+      logSignupError("trial_create", trial.error);
       return NextResponse.json({ error: "Impossible d'activer le mois gratuit." }, { status: 500 });
     }
   }
@@ -71,6 +90,7 @@ export async function POST(request: Request) {
     success: true,
     redirectTo: "/installation?trial=active",
     agency_id: agencyId,
+    agent_user_id: agentUserId,
     subscription_status: "simulated",
     trial_ends_at: addMonths(new Date(), 1).toISOString()
   });
@@ -88,10 +108,72 @@ export async function POST(request: Request) {
   response.cookies.set(NESTO_AGENCY_COOKIE, agencyId, cookieOptions);
   if (agentUserId) response.cookies.set(NESTO_AGENT_USER_COOKIE, agentUserId, cookieOptions);
   response.headers.set("Cache-Control", "no-store");
+
+  after(async () => {
+    const welcomeEmail = getWelcomeEmail(firstNameFrom(parsed.value.fullName));
+    await sendEmail({
+      to: parsed.value.email,
+      ...welcomeEmail
+    });
+  });
+
   return response;
 }
 
 type SupabaseAdmin = NonNullable<ReturnType<typeof createSupabaseAdminClientOrNull>>;
+
+async function findExistingSignupAccount(supabase: SupabaseAdmin, email: string, phone: string) {
+  const agencyUser = await supabase
+    .from("agency_users")
+    .select("id")
+    .eq("email", email)
+    .limit(1)
+    .maybeSingle();
+
+  if (agencyUser.error) {
+    logSignupError("existing_agency_user_lookup", agencyUser.error);
+    return { ok: false as const, exists: false };
+  }
+  if (agencyUser.data?.id) return { ok: true as const, exists: true, reason: "email" as const };
+
+  const profile = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email)
+    .limit(1)
+    .maybeSingle();
+
+  if (profile.error) {
+    logSignupError("existing_profile_lookup", profile.error);
+    return { ok: false as const, exists: false };
+  }
+
+  if (profile.data?.id) return { ok: true as const, exists: true, reason: "email" as const };
+
+  const normalizedPhone = normalizePhone(phone);
+  if (!normalizedPhone) return { ok: true as const, exists: false };
+
+  const [agencyPhones, profilePhones] = await Promise.all([
+    supabase.from("agency_users").select("id, phone").not("phone", "is", null),
+    supabase.from("profiles").select("id, phone").not("phone", "is", null)
+  ]);
+
+  if (agencyPhones.error) {
+    logSignupError("existing_agency_user_phone_lookup", agencyPhones.error);
+    return { ok: false as const, exists: false };
+  }
+  if (profilePhones.error) {
+    logSignupError("existing_profile_phone_lookup", profilePhones.error);
+    return { ok: false as const, exists: false };
+  }
+
+  const phoneExists = [...(agencyPhones.data ?? []), ...(profilePhones.data ?? [])]
+    .some((row) => normalizePhone(row.phone) === normalizedPhone);
+
+  return phoneExists
+    ? { ok: true as const, exists: true, reason: "phone" as const }
+    : { ok: true as const, exists: false };
+}
 
 async function findOrCreateAgency(
   supabase: SupabaseAdmin,
@@ -104,11 +186,11 @@ async function findOrCreateAgency(
     ? await supabase.from("agencies").select("id, website_url").eq("website_url", input.websiteUrl).limit(1).maybeSingle()
     : { data: null, error: null };
 
-  if (byWebsite.error) return { ok: false as const };
+  if (byWebsite.error) return { ok: false as const, error: byWebsite.error };
   if (byWebsite.data?.id) return { ok: true as const, agencyId: byWebsite.data.id as string };
 
   const byName = await supabase.from("agencies").select("id, website_url").eq("name", input.agencyName).limit(1).maybeSingle();
-  if (byName.error) return { ok: false as const };
+  if (byName.error) return { ok: false as const, error: byName.error };
 
   if (byName.data?.id) {
     if (input.websiteUrl && !byName.data.website_url) {
@@ -126,7 +208,7 @@ async function findOrCreateAgency(
     .select("id")
     .single();
 
-  if (error || !data?.id) return { ok: false as const };
+  if (error || !data?.id) return { ok: false as const, error: error ?? "Agence créée sans id." };
   return { ok: true as const, agencyId: data.id as string };
 }
 
@@ -147,7 +229,7 @@ async function findOrCreateAgentUser(
     .limit(1)
     .maybeSingle();
 
-  if (byEmail.error) return { ok: false as const };
+  if (byEmail.error) return { ok: false as const, error: byEmail.error };
   if (byEmail.data?.id) {
     await supabase
       .from("agency_users")
@@ -169,7 +251,7 @@ async function findOrCreateAgentUser(
       .limit(1)
       .maybeSingle();
 
-    if (byPhone.error) return { ok: false as const };
+    if (byPhone.error) return { ok: false as const, error: byPhone.error };
     if (byPhone.data?.id) {
       await supabase
         .from("agency_users")
@@ -195,7 +277,7 @@ async function findOrCreateAgentUser(
     .select("id")
     .single();
 
-  if (error || !data?.id) return { ok: false as const };
+  if (error || !data?.id) return { ok: false as const, error: error ?? "Agent créé sans id." };
   return { ok: true as const, agentUserId: data.id as string };
 }
 
@@ -216,6 +298,8 @@ async function upsertProfile(
     .limit(1)
     .maybeSingle();
 
+  if (existing.error) return { ok: false, error: existing.error };
+
   if (existing.data?.id) {
     const { error } = await supabase
       .from("profiles")
@@ -225,7 +309,7 @@ async function upsertProfile(
         role: "owner"
       })
       .eq("id", existing.data.id);
-    return { ok: !error };
+    return { ok: !error, error };
   }
 
   const { error } = await supabase.from("profiles").insert({
@@ -235,7 +319,7 @@ async function upsertProfile(
     phone: input.phone || null,
     role: "owner"
   });
-  return { ok: !error };
+  return { ok: !error, error };
 }
 
 async function ensureAutonomySettings(supabase: SupabaseAdmin, agencyId: string) {
@@ -246,11 +330,11 @@ async function ensureAutonomySettings(supabase: SupabaseAdmin, agencyId: string)
     .limit(1)
     .maybeSingle();
 
-  if (existing.error) return { ok: false };
+  if (existing.error) return { ok: false, error: existing.error };
   if (existing.data?.id) return { ok: true };
 
   const { error } = await supabase.from("agency_autonomy_settings").insert({ agency_id: agencyId });
-  return { ok: !error };
+  return { ok: !error, error };
 }
 
 async function ensureSimulatedTrial(supabase: SupabaseAdmin, agencyId: string) {
@@ -267,11 +351,35 @@ async function ensureSimulatedTrial(supabase: SupabaseAdmin, agencyId: string) {
     },
     { onConflict: "agency_id" }
   );
-  return { ok: !error };
+  return { ok: !error, error };
 }
 
 function addMonths(date: Date, months: number) {
   const next = new Date(date);
   next.setMonth(next.getMonth() + months);
   return next;
+}
+
+function firstNameFrom(fullName: string) {
+  return fullName.split(/\s+/).filter(Boolean)[0] || "bonjour";
+}
+
+function normalizePhone(phone: string) {
+  return phone.replace(/\D/g, "");
+}
+
+function logSignupError(step: string, error: unknown) {
+  console.error("Erreur signup Nesto", {
+    step,
+    error: getErrorMessage(error)
+  });
+}
+
+function getErrorMessage(error: unknown) {
+  if (!error) return "Erreur inconnue";
+  if (error instanceof Error) return error.message;
+  if (typeof error === "object" && "message" in error) {
+    return String((error as { message?: unknown }).message);
+  }
+  return String(error);
 }

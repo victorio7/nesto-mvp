@@ -30,6 +30,10 @@ export function SignupForm() {
       phone: form.phone.trim(),
       agencyName: form.agencyName.trim()
     };
+    const signupPayload = {
+      ...values,
+      fullName: `${values.firstName} ${values.lastName}`.trim()
+    };
 
     if (!values.firstName || !values.lastName || !values.email || !values.phone || !values.agencyName) {
       setError("Renseignez les champs obligatoires pour créer votre espace.");
@@ -58,12 +62,11 @@ export function SignupForm() {
         method: "POST",
         credentials: "same-origin",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...values,
-          fullName: `${values.firstName} ${values.lastName}`.trim()
-        })
+        body: JSON.stringify(signupPayload)
       });
       const payload = await response.json().catch(() => null) as {
+        agency_id?: string;
+        agent_user_id?: string;
         error?: string;
         ok?: boolean;
         redirectTo?: string;
@@ -75,12 +78,17 @@ export function SignupForm() {
           status: response.status,
           error: payload?.error ?? "Invalid API response"
         });
-        setError("Une erreur est survenue. Vérifiez vos informations ou contactez l’équipe Nesto.");
+        setError(payload?.error || "Une erreur est survenue. Vérifiez vos informations ou contactez l’équipe Nesto.");
         setLoading(false);
         return;
       }
 
-      window.location.href = payload.redirectTo || "/installation?trial=active";
+      const redirectTo = payload.redirectTo || "/installation?trial=active";
+      persistSignupSessionCookies({
+        agencyId: payload.agency_id,
+        agentUserId: payload.agent_user_id
+      });
+      window.location.assign(redirectTo);
     } catch (signupError) {
       console.error("Nesto signup request failed", signupError);
       setError("Une erreur est survenue. Vérifiez vos informations ou contactez l’équipe Nesto.");
@@ -198,4 +206,16 @@ export function SignupForm() {
       </div>
     </form>
   );
+}
+
+function persistSignupSessionCookies(input: { agencyId?: string; agentUserId?: string }) {
+  if (!input.agencyId || !input.agentUserId) return;
+
+  const maxAge = 60 * 60 * 24 * 7;
+  const sameSite = "SameSite=Lax";
+  const path = "Path=/";
+  document.cookie = `immopilot_session=active; ${path}; Max-Age=${maxAge}; ${sameSite}`;
+  document.cookie = `immopilot_agency_id=${encodeURIComponent(input.agencyId)}; ${path}; Max-Age=${maxAge}; ${sameSite}`;
+  document.cookie = `nesto_agency_id=${encodeURIComponent(input.agencyId)}; ${path}; Max-Age=${maxAge}; ${sameSite}`;
+  document.cookie = `nesto_agent_user_id=${encodeURIComponent(input.agentUserId)}; ${path}; Max-Age=${maxAge}; ${sameSite}`;
 }
