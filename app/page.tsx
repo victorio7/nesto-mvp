@@ -143,21 +143,18 @@ export default async function LandingPage({
             <h1 className="mt-6 text-4xl font-black leading-[1.04] text-ink sm:text-5xl lg:text-6xl">
               Votre bras droit commercial en immobilier.
             </h1>
-            <p className="mt-6 max-w-xl text-xl font-black leading-8 text-pine sm:text-2xl">
-              Nesto centralise, mémorise, relance et vous alerte au bon moment.
+            <p className="mt-6 max-w-xl text-lg font-semibold leading-8 text-gray-700">
+              Nesto mémorise vos prospects, prépare le suivi et vous alerte au bon moment. Vous, vous gérez la relation.
             </p>
-            <p className="mt-5 hidden max-w-xl text-base font-medium leading-8 text-gray-700 sm:block sm:text-lg">
-              Nesto organise vos prospects, connaît vos biens et prépare le suivi. Vous restez concentré sur la relation.
-            </p>
-            <p className="mt-5 max-w-xl border-l-2 border-wood pl-4 text-base font-black leading-7 text-ink">
-              Pas besoin d'apprendre un nouveau logiciel. Vous pilotez Nesto depuis WhatsApp.
+            <p className="mt-5 max-w-xl border-l-2 border-pine pl-4 text-base font-black leading-7 text-ink">
+              Pas de logiciel compliqué. Vous pilotez tout depuis WhatsApp.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
                 className="focus-ring inline-flex min-h-[52px] items-center justify-center gap-2 rounded-lg bg-pine px-6 py-3 text-sm font-black text-white shadow-xl shadow-pine/20 transition duration-200 hover:-translate-y-1 hover:bg-[#123f32] hover:shadow-2xl"
                 href="/signup"
               >
-                Démarrer avec Nesto <ArrowRight size={18} />
+                Commencer gratuitement <ArrowRight size={18} />
               </Link>
               <a
                 className="focus-ring inline-flex min-h-[52px] items-center justify-center gap-2 rounded-lg bg-white/90 px-6 py-3 text-sm font-black text-ink shadow-lg ring-1 ring-black/5 backdrop-blur transition duration-200 hover:-translate-y-1 hover:bg-white hover:shadow-xl"
@@ -165,13 +162,13 @@ export default async function LandingPage({
                 rel="noreferrer"
                 target="_blank"
               >
-                <MessageCircle className="text-pine" size={18} /> Parler à un conseiller WhatsApp
+                <MessageCircle className="text-pine" size={18} /> Nous parler sur WhatsApp
               </a>
             </div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-gray-700">
-              <TrustItem>Installation accompagnée</TrustItem>
-              <TrustItem>1 mois gratuit</TrustItem>
-              <TrustItem>Sans engagement</TrustItem>
+              <TrustItem>Essai 1 mois gratuit</TrustItem>
+              <TrustItem>Pas de carte bancaire</TrustItem>
+              <TrustItem>Installation fournie</TrustItem>
             </div>
           </div>
 
@@ -259,21 +256,18 @@ export default async function LandingPage({
       <section className="border-y border-[#e7dcc8] bg-[#f8f5ee]">
         <div className="landing-reveal mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-            <SectionIntro eyebrow="La solution" title="Nesto devient votre mémoire commerciale intelligente.">
-              Il organise vos échanges, retrouve les bons contacts et prépare le suivi.
+            <SectionIntro eyebrow="Simplement" title="Nesto prépare le suivi. Vous gardez la relation.">
+              Il mémorise, classe, retrouve et vous alerte. Vous, vous agissez.
             </SectionIntro>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <PremiumPoint icon={<Brain size={21} />} title="Mémoire commerciale">
-                Nesto garde les critères, les échanges et la prochaine action de chaque prospect.
+            <div className="grid gap-4 sm:grid-cols-3">
+              <PremiumPoint icon={<Brain size={21} />} title="Nesto mémorise">
+                Vos prospects, leurs critères et la prochaine action à faire.
               </PremiumPoint>
-              <PremiumPoint icon={<BellRing size={21} />} title="Alertes au bon moment">
-                Il fait remonter ce qui compte avant qu'une opportunité ne se refroidisse.
+              <PremiumPoint icon={<BellRing size={21} />} title="Nesto vous alerte">
+                Au bon moment, avant qu'une opportunité se refroidisse.
               </PremiumPoint>
-              <PremiumPoint icon={<PhoneCall size={21} />} title="Terrain d'abord">
-                Vous restez disponible pour les appels, les visites, les propriétaires et la signature.
-              </PremiumPoint>
-              <PremiumPoint icon={<Sparkles size={21} />} title="Simple dès le premier jour">
-                Nesto travaille là où vous travaillez déjà. Pas de nouveau logiciel à apprendre.
+              <PremiumPoint icon={<PhoneCall size={21} />} title="Vous agissez">
+                Vous gérez la relation, les visites, les appels et la signature.
               </PremiumPoint>
             </div>
           </div>
@@ -564,16 +558,13 @@ export default async function LandingPage({
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-ink text-white">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3">
-            <span className="grid size-9 place-items-center rounded-lg bg-pine font-black">N</span>
-            <div>
-              <p className="font-black">Nesto</p>
-              <p className="text-xs font-semibold text-white/55">Vous gérez la relation. Nesto assure le suivi.</p>
-            </div>
+      <footer className="border-t border-line bg-white">
+        <div className="mx-auto max-w-7xl px-4 py-8 text-center sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center gap-2">
+            <span className="grid size-8 place-items-center rounded-lg bg-pine font-black text-white text-sm">N</span>
+            <p className="font-black text-ink">Nesto</p>
           </div>
-          <p className="text-sm font-semibold text-white/55">WhatsApp agit. Le dashboard mémorise.</p>
+          <p className="mt-3 text-sm font-semibold text-gray-600">Vous gérez la relation. Nesto assure le suivi.</p>
         </div>
       </footer>
     </main>
