@@ -21,6 +21,26 @@ export function SignupForm() {
   const [loading, setLoading] = useState(false);
   const [isMobile, setIsMobile] = useState(typeof window !== "undefined" && window.innerWidth < 768);
 
+  const handleGoogleSignIn = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/auth/google", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+      });
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError("Impossible de connecter Google. Réessayez.");
+        setLoading(false);
+      }
+    } catch {
+      setError("Connexion Google échouée. Réessayez.");
+      setLoading(false);
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (loading) return;
@@ -73,7 +93,7 @@ export function SignupForm() {
         return;
       }
 
-      window.location.href = "/installation?trial=active";
+      window.location.href = "/onboarding";
 
     } catch {
       setError("Connexion impossible. Réessayez.");
@@ -225,6 +245,7 @@ export function SignupForm() {
             }}>
               <button
                 type="button"
+                onClick={() => handleGoogleSignIn()}
                 style={{
                   height: "52px",
                   background: GRAY_LIGHT,

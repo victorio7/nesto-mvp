@@ -3,6 +3,8 @@ import {
   DEMO_SESSION_COOKIE,
   NESTO_AGENCY_COOKIE,
   NESTO_AGENT_USER_COOKIE,
+  NESTO_SIGNUP_AGENCY_COOKIE,
+  NESTO_SIGNUP_AGENT_USER_COOKIE,
   hasSupabaseAuthCookie
 } from "@/lib/auth/session";
 import { isTeamAccessEnabled, TEAM_SESSION_COOKIE } from "@/lib/team-auth";
@@ -34,18 +36,31 @@ export function middleware(request: NextRequest) {
   const isProtected = protectedPrefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
   if (!isProtected) return NextResponse.next();
 
+  const isInstallation = pathname === "/installation" || pathname.startsWith("/installation/");
+
+  if (isInstallation && request.nextUrl.searchParams.get("trial") === "active") {
+    return NextResponse.next();
+  }
+
   const cookieNames = request.cookies.getAll().map((cookie) => cookie.name);
   const hasDemoSession = request.cookies.get(DEMO_SESSION_COOKIE)?.value === "active";
   const hasSupabaseSession = hasSupabaseAuthCookie(cookieNames);
   const hasAgentCookie = Boolean(request.cookies.get(NESTO_AGENT_USER_COOKIE)?.value);
   const hasAgencyCookie = Boolean(request.cookies.get(NESTO_AGENCY_COOKIE)?.value);
+  const hasSignupAgentCookie = Boolean(request.cookies.get(NESTO_SIGNUP_AGENT_USER_COOKIE)?.value);
+  const hasSignupAgencyCookie = Boolean(request.cookies.get(NESTO_SIGNUP_AGENCY_COOKIE)?.value);
   const hasActiveAgent = (hasDemoSession || hasSupabaseSession) && hasAgentCookie && hasAgencyCookie;
 
-  if (hasActiveAgent) return NextResponse.next();
+  if (hasActiveAgent) {
+    return NextResponse.next();
+  }
 
-  const signupUrl = request.nextUrl.clone();
-  signupUrl.pathname = "/signup";
-  signupUrl.searchParams.set("next", `${pathname}${request.nextUrl.search}`);
+  if (isInstallation && hasSignupAgentCookie && hasSignupAgencyCookie) {
+    return NextResponse.next();
+  }
+
+  const signupUrl = new URL("/signup", request.url);
+  signupUrl.search = "";
   return NextResponse.redirect(signupUrl);
 }
 
@@ -55,7 +70,6 @@ export const config = {
     "/client-home/:path*",
     "/onboarding/:path*",
     "/installation/:path*",
-    "/team/:path*",
     "/sources/:path*",
     "/settings/:path*",
     "/contacts/:path*",

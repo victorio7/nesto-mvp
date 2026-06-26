@@ -13,7 +13,7 @@ import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 const navItems = [
-  { href: "/dashboard", label: "Memoire", icon: Gauge },
+  { href: "/dashboard", label: "Mémoire", icon: Gauge },
   { href: "/contacts", label: "Prospects", icon: ContactRound },
   { href: "/properties", label: "Biens", icon: Home },
   { href: "/sources", label: "Connexions", icon: Plug },
@@ -42,7 +42,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             return (
               <Link
                 className={`flex min-h-10 items-center gap-3 rounded-md px-3 text-sm font-semibold transition ${
-                  pathname === item.href ? "bg-pine text-white" : "text-gray-700 hover:bg-paper hover:text-ink"
+                  pathname === item.href || pathname.startsWith(`${item.href}/`) ? "bg-pine text-white" : "text-gray-700 hover:bg-paper hover:text-ink"
                 }`}
                 href={item.href}
                 key={item.href}

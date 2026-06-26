@@ -117,6 +117,7 @@ export async function POST(request: Request) {
     });
   });
 
+  response.headers.set("X-Redirect-To", "/installation?trial=active");
   return response;
 }
 
