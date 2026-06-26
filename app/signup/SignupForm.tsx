@@ -3,6 +3,13 @@
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
 
+const PINE = "#174f3f";
+const PINE_DARK = "#0f3a2e";
+const PINE_LIGHT = "#1f5f4f";
+const GRAY_LIGHT = "#f3f4f6";
+const GRAY_BORDER = "#e5e7eb";
+const BG = "#faf9f7";
+
 export function SignupForm() {
   const [form, setForm] = useState({
     email: "",
@@ -12,8 +19,9 @@ export function SignupForm() {
   });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== "undefined" && window.innerWidth < 768);
 
-  async function submit(event: FormEvent<HTMLFormElement>) {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (loading) return;
     setError("");
@@ -70,132 +78,290 @@ export function SignupForm() {
     } catch {
       setError("Connexion impossible. Réessayez.");
     }
-  }
+  };
 
   return (
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "100vh", background: "#f7f5ef" }}>
+    <div style={{
+      minHeight: "100vh",
+      background: BG,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "2rem 1rem"
+    }}>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr",
+        gap: 0,
+        width: "100%",
+        maxWidth: "1200px",
+        borderRadius: "16px",
+        overflow: "hidden",
+        boxShadow: "0 20px 60px rgba(0,0,0,0.08)",
+        background: "white"
+      }}>
 
-      {/* Gauche */}
-      <div style={{ padding: "3rem 2.5rem", display: "flex", flexDirection: "column", justifyContent: "center", gap: "2rem" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <div style={{ width: 44, height: 44, background: "#10b981", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, fontSize: 20 }}>N</div>
-          <div>
-            <div style={{ fontSize: 17, fontWeight: 600, color: "#1a1a1a" }}>Nesto</div>
-            <div style={{ fontSize: 12, color: "#7a7a6e" }}>Votre bras droit commercial</div>
-          </div>
-        </div>
-
-        <div>
-          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1a1a1a", lineHeight: 1.2, margin: 0 }}>
-            L&apos;assistant qui ne laisse rien passer.
-          </h1>
-          <p style={{ fontSize: 15, color: "#5a5a52", marginTop: 14, lineHeight: 1.6 }}>
-            Nesto mémorise vos prospects, prépare vos relances et vous alerte au bon moment — depuis WhatsApp.
-          </p>
-        </div>
-
-      </div>
-
-      {/* Droite */}
-      <div style={{ background: "white", display: "flex", flexDirection: "column", justifyContent: "center", padding: "2.5rem 3rem" }}>
-        <div style={{ maxWidth: 420, width: "100%" }}>
-          <p style={{ fontSize: 11, fontWeight: 500, color: "#10b981", textTransform: "uppercase", letterSpacing: "0.8px", margin: "0 0 8px" }}>Créer mon espace</p>
-          <h2 style={{ fontSize: 26, fontWeight: 700, color: "#1a1a1a", margin: "0 0 6px" }}>Démarrer avec Nesto</h2>
-          <p style={{ fontSize: 14, color: "#7a7a6e", margin: "0 0 28px" }}>4 champs. 2 minutes. C&apos;est parti.</p>
-
-          <form onSubmit={submit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <button
-              type="button"
-              style={{
-                height: 50,
-                background: "#f3f4f6",
-                border: "1px solid #e5e7eb",
-                borderRadius: 16,
-                fontSize: 15,
-                fontWeight: 500,
-                color: "#1a1a1a",
-                cursor: "pointer",
-                fontFamily: "inherit",
+        {/* Colonne gauche - Logo et messaging */}
+        {!isMobile && (
+          <div style={{
+            padding: "4rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            background: BG,
+            gap: "3rem"
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <div style={{
+                width: 48,
+                height: 48,
+                background: PINE,
+                borderRadius: "12px",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 10,
-                transition: "all 0.2s"
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = "#e5e7eb";
-                e.currentTarget.style.borderColor = "#d1d5db";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = "#f3f4f6";
-                e.currentTarget.style.borderColor = "#e5e7eb";
-              }}
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <text x="2" y="18" fontSize="16" fontWeight="bold">G</text>
-              </svg>
-              Continuer avec Google
-            </button>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
-              <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }} />
-              <span style={{ fontSize: 12, color: "#9ca3af" }}>ou</span>
-              <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }} />
+                color: "white",
+                fontWeight: 700,
+                fontSize: 22
+              }}>
+                N
+              </div>
+              <div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#111827" }}>Nesto</div>
+                <div style={{ fontSize: 12, color: "#7a7a6e", marginTop: "2px" }}>Bras droit commercial</div>
+              </div>
             </div>
 
-            {[
-              { label: "Email", key: "email", placeholder: "vous@agence.fr", type: "email" },
-              { label: "Numéro WhatsApp", key: "phone", placeholder: "+689 XX XX XX", type: "tel" },
-              { label: "Nom de l'agence", key: "agencyName", placeholder: "Votre agence", type: "text" },
-              { label: "Mot de passe", key: "password", placeholder: "8 caractères min.", type: "password" },
-            ].map(({ label, key, placeholder, type }) => (
-              <label key={key} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                <span style={{ fontSize: 13, fontWeight: 500, color: "#374151" }}>{label}</span>
-                <input
-                  type={type}
-                  placeholder={placeholder}
-                  value={form[key as keyof typeof form]}
-                  onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
-                  style={{ height: 48, borderRadius: 12, border: "1px solid #e5e7eb", padding: "0 14px", fontSize: 14, background: "#f9fafb", outline: "none", fontFamily: "inherit", transition: "border-color 0.2s" }}
-                  onFocus={(e) => e.currentTarget.style.borderColor = "#10b981"}
-                  onBlur={(e) => e.currentTarget.style.borderColor = "#e5e7eb"}
-                />
-              </label>
-            ))}
-
-            {error && (
-              <p style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 12, padding: "12px 14px", fontSize: 13, color: "#991b1b", margin: 0 }}>
-                {error}
+            <div>
+              <h1 style={{
+                fontSize: 36,
+                fontWeight: 700,
+                color: "#111827",
+                lineHeight: 1.3,
+                margin: 0
+              }}>
+                L&apos;assistant qui ne laisse rien passer.
+              </h1>
+              <p style={{
+                fontSize: 16,
+                color: "#5a5a52",
+                marginTop: "1.5rem",
+                lineHeight: 1.6,
+                margin: "1.5rem 0 0"
+              }}>
+                Nesto mémorise vos prospects, prépare vos relances et vous alerte au bon moment — depuis WhatsApp.
               </p>
+            </div>
+          </div>
+        )}
+
+        {/* Colonne droite - Formulaire */}
+        <div style={{
+          padding: isMobile ? "2.5rem 1.5rem" : "4rem 3rem",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center"
+        }}>
+          <div style={{ maxWidth: "100%", width: "100%" }}>
+            {isMobile && (
+              <div style={{ marginBottom: "2rem", textAlign: "center" }}>
+                <div style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "12px",
+                  marginBottom: "1.5rem"
+                }}>
+                  <div style={{
+                    width: 40,
+                    height: 40,
+                    background: PINE,
+                    borderRadius: "10px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "white",
+                    fontWeight: 700,
+                    fontSize: 18
+                  }}>
+                    N
+                  </div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: "#111827" }}>Nesto</div>
+                </div>
+              </div>
             )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                height: 50,
-                background: loading ? "#6ee7b7" : "#10b981",
-                color: "white",
-                border: "none",
-                borderRadius: 16,
-                fontSize: 15,
-                fontWeight: 600,
-                cursor: loading ? "not-allowed" : "pointer",
-                fontFamily: "inherit",
-                transition: "all 0.2s",
-                marginTop: 4
-              }}
-              onMouseEnter={(e) => !loading && (e.currentTarget.style.background = "#059669")}
-              onMouseLeave={(e) => !loading && (e.currentTarget.style.background = "#10b981")}
-            >
-              {loading ? "Création en cours…" : "Créer mon compte →"}
-            </button>
-
-            <p style={{ textAlign: "center", fontSize: 13, color: "#7a7a6e", margin: "16px 0 0" }}>
-              Déjà inscrit ?{" "}
-              <Link href="/login" style={{ color: "#10b981", fontWeight: 600, textDecoration: "none" }}>Se connecter</Link>
+            <p style={{
+              fontSize: 12,
+              fontWeight: 600,
+              color: PINE,
+              textTransform: "uppercase",
+              letterSpacing: "0.8px",
+              margin: "0 0 12px"
+            }}>
+              Créer mon espace
             </p>
-          </form>
+            <h2 style={{
+              fontSize: 28,
+              fontWeight: 700,
+              color: "#111827",
+              margin: "0 0 8px"
+            }}>
+              Démarrer avec Nesto
+            </h2>
+            <p style={{
+              fontSize: 15,
+              color: "#7a7a6e",
+              margin: "0 0 2rem"
+            }}>
+              4 champs. 2 minutes. C&apos;est parti.
+            </p>
+
+            <form onSubmit={handleSubmit} noValidate style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "1.25rem"
+            }}>
+              <button
+                type="button"
+                style={{
+                  height: "52px",
+                  background: GRAY_LIGHT,
+                  border: `1px solid ${GRAY_BORDER}`,
+                  borderRadius: "12px",
+                  fontSize: 15,
+                  fontWeight: 500,
+                  color: "#111827",
+                  cursor: "pointer",
+                  fontFamily: "inherit",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 10,
+                  transition: "all 0.2s"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "#e5e7eb";
+                  e.currentTarget.style.borderColor = "#d1d5db";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = GRAY_LIGHT;
+                  e.currentTarget.style.borderColor = GRAY_BORDER;
+                }}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <text x="2" y="18" fontSize="16" fontWeight="bold">G</text>
+                </svg>
+                Continuer avec Google
+              </button>
+
+              <div style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                margin: "0.5rem 0"
+              }}>
+                <div style={{ flex: 1, height: "1px", background: GRAY_BORDER }} />
+                <span style={{ fontSize: 12, color: "#9ca3af" }}>ou</span>
+                <div style={{ flex: 1, height: "1px", background: GRAY_BORDER }} />
+              </div>
+
+              {[
+                { label: "Email", key: "email", placeholder: "vous@agence.fr", type: "email" },
+                { label: "Numéro WhatsApp", key: "phone", placeholder: "+689 XX XX XX", type: "tel" },
+                { label: "Nom de l'agence", key: "agencyName", placeholder: "Votre agence", type: "text" },
+                { label: "Mot de passe", key: "password", placeholder: "8 caractères min.", type: "password" },
+              ].map(({ label, key, placeholder, type }) => (
+                <label key={key} style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "8px"
+                }}>
+                  <span style={{
+                    fontSize: 13,
+                    fontWeight: 600,
+                    color: "#374151"
+                  }}>
+                    {label}
+                  </span>
+                  <input
+                    type={type}
+                    placeholder={placeholder}
+                    value={form[key as keyof typeof form]}
+                    onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+                    style={{
+                      height: "50px",
+                      borderRadius: "12px",
+                      border: `1px solid ${GRAY_BORDER}`,
+                      padding: "0 14px",
+                      fontSize: 14,
+                      background: "#fafbfc",
+                      outline: "none",
+                      fontFamily: "inherit",
+                      transition: "border-color 0.2s"
+                    }}
+                    onFocus={(e) => e.currentTarget.style.borderColor = PINE}
+                    onBlur={(e) => e.currentTarget.style.borderColor = GRAY_BORDER}
+                  />
+                </label>
+              ))}
+
+              {error && (
+                <p style={{
+                  background: "#fef2f2",
+                  border: "1px solid #fca5a5",
+                  borderRadius: "12px",
+                  padding: "12px 14px",
+                  fontSize: 13,
+                  color: "#991b1b",
+                  margin: 0
+                }}>
+                  {error}
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                style={{
+                  height: "52px",
+                  background: loading ? PINE_LIGHT : PINE,
+                  color: "white",
+                  border: "none",
+                  borderRadius: "12px",
+                  fontSize: 15,
+                  fontWeight: 600,
+                  cursor: loading ? "not-allowed" : "pointer",
+                  fontFamily: "inherit",
+                  transition: "all 0.2s",
+                  marginTop: "0.5rem",
+                  opacity: loading ? 0.8 : 1
+                }}
+                onMouseEnter={(e) => !loading && (e.currentTarget.style.background = PINE_DARK)}
+                onMouseLeave={(e) => !loading && (e.currentTarget.style.background = PINE)}
+              >
+                {loading ? "Création en cours…" : "Créer mon compte →"}
+              </button>
+
+              <p style={{
+                textAlign: "center",
+                fontSize: 13,
+                color: "#7a7a6e",
+                margin: "1.5rem 0 0"
+              }}>
+                Déjà inscrit ?{" "}
+                <Link href="/login" style={{
+                  color: PINE,
+                  fontWeight: 600,
+                  textDecoration: "none",
+                  transition: "color 0.2s"
+                }}>
+                  Se connecter
+                </Link>
+              </p>
+            </form>
+          </div>
         </div>
       </div>
     </div>
