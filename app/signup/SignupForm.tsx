@@ -5,12 +5,9 @@ import { useState, type FormEvent } from "react";
 
 export function SignupForm() {
   const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
     email: "",
     phone: "",
     password: "",
-    confirmPassword: "",
     agencyName: ""
   });
   const [error, setError] = useState("");
@@ -19,187 +16,188 @@ export function SignupForm() {
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loading) return;
-
     setError("");
 
-    const values = {
-      ...form,
-      firstName: form.firstName.trim(),
-      lastName: form.lastName.trim(),
+    const v = {
       email: form.email.trim(),
       phone: form.phone.trim(),
-      agencyName: form.agencyName.trim()
-    };
-    const signupPayload = {
-      ...values,
-      fullName: `${values.firstName} ${values.lastName}`.trim()
+      agencyName: form.agencyName.trim(),
+      password: form.password,
     };
 
-    if (!values.firstName || !values.lastName || !values.email || !values.phone || !values.agencyName) {
-      setError("Renseignez les champs obligatoires pour créer votre espace.");
+    if (!v.email || !v.phone || !v.agencyName || !v.password) {
+      setError("Renseignez tous les champs obligatoires.");
       return;
     }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-      setError("Saisissez une adresse email valide.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)) {
+      setError("Adresse email invalide.");
       return;
     }
-
-    if (values.password !== values.confirmPassword) {
-      setError("Les mots de passe ne correspondent pas.");
-      return;
-    }
-
-    if (values.password.length < 8) {
-      setError("Choisissez un mot de passe d'au moins 8 caractères.");
+    if (v.password.length < 8) {
+      setError("Mot de passe : 8 caractères minimum.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await fetch("/api/auth/signup", {
+      const res = await fetch("/api/auth/signup", {
         method: "POST",
-        credentials: "same-origin",
+        credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(signupPayload)
+        body: JSON.stringify({
+          ...v,
+          fullName: v.email.split("@")[0]
+        }),
       });
-      const payload = await response.json().catch(() => null) as {
-        agency_id?: string;
-        agent_user_id?: string;
-        error?: string;
-        ok?: boolean;
-        redirectTo?: string;
-        success?: boolean;
-      } | null;
 
-      if (!response.ok || (!payload?.ok && !payload?.success)) {
-        console.error("Nesto signup failed", {
-          status: response.status,
-          error: payload?.error ?? "Invalid API response"
-        });
-        setError(payload?.error || "Une erreur est survenue. Vérifiez vos informations ou contactez l’équipe Nesto.");
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || "Une erreur est survenue.");
         setLoading(false);
         return;
       }
 
-      const redirectTo = payload.redirectTo || "/installation?trial=active";
-      window.location.assign(redirectTo);
-    } catch (signupError) {
-      console.error("Nesto signup request failed", signupError);
-      setError("Une erreur est survenue. Vérifiez vos informations ou contactez l’équipe Nesto.");
-      setLoading(false);
+      const data = await res.json().catch(() => null);
+      if (!data?.ok) {
+        setError(data?.error || "Une erreur est survenue.");
+        setLoading(false);
+        return;
+      }
+
+      window.location.href = "/installation?trial=active";
+
+    } catch {
+      setError("Connexion impossible. Réessayez.");
     }
   }
 
   return (
-    <form
-      className="grid gap-4 sm:grid-cols-2"
-      noValidate
-      onSubmit={submit}
-    >
-      <label className="block text-sm font-bold">
-        Prénom
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, firstName: event.target.value }))}
-          placeholder="Marie"
-          required
-          value={form.firstName}
-        />
-      </label>
-      <label className="block text-sm font-bold">
-        Nom
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, lastName: event.target.value }))}
-          placeholder="Dupont"
-          required
-          value={form.lastName}
-        />
-      </label>
-      <label className="block text-sm font-bold">
-        Email
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, email: event.target.value }))}
-          placeholder="vous@agence.fr"
-          required
-          type="email"
-          value={form.email}
-        />
-      </label>
-      <label className="block text-sm font-bold">
-        Numéro WhatsApp
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, phone: event.target.value }))}
-          placeholder="+689..."
-          required
-          type="tel"
-          value={form.phone}
-        />
-      </label>
-      <label className="block text-sm font-bold">
-        Mot de passe
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, password: event.target.value }))}
-          placeholder="Minimum 8 caractères"
-          required
-          type="password"
-          value={form.password}
-        />
-      </label>
-      <label className="block text-sm font-bold">
-        Confirmer le mot de passe
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, confirmPassword: event.target.value }))}
-          placeholder="Retapez votre mot de passe"
-          required
-          type="password"
-          value={form.confirmPassword}
-        />
-      </label>
-      <label className="block text-sm font-bold">
-        Nom de l'agence
-        <input
-          className="mt-2 w-full rounded-md border border-line px-3 py-2 focus-ring"
-          onChange={(event) => setForm((current) => ({ ...current, agencyName: event.target.value }))}
-          placeholder="Nom de votre agence"
-          required
-          value={form.agencyName}
-        />
-      </label>
-      <div className="rounded-md border border-wood/25 bg-[#fffaf0] p-4 text-sm leading-6 text-gray-700 sm:col-span-2">
-        <p className="font-black text-ink">Offre de lancement — 100 premiers agents</p>
-        <p className="mt-1 font-black text-pine">1 mois gratuit</p>
-        <p className="mt-1">Puis 99 €/mois, sans engagement.</p>
-        <p className="mt-1 font-black text-pine">
-          Votre mois gratuit commence lorsque Nesto est installé et prêt à être testé avec vous.
-        </p>
-        <p className="mt-2 rounded-md border border-line bg-white p-3 font-semibold text-gray-700">
-          Pendant le MVP, aucun paiement n’est demandé. En production, la carte bancaire sera enregistrée pour activer l’essai gratuit.
-        </p>
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: "100vh", background: "#f7f5ef" }}>
+
+      {/* Gauche */}
+      <div style={{ padding: "3rem 2.5rem", display: "flex", flexDirection: "column", justifyContent: "center", gap: "2rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{ width: 44, height: 44, background: "#10b981", borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", color: "white", fontWeight: 700, fontSize: 20 }}>N</div>
+          <div>
+            <div style={{ fontSize: 17, fontWeight: 600, color: "#1a1a1a" }}>Nesto</div>
+            <div style={{ fontSize: 12, color: "#7a7a6e" }}>Votre bras droit commercial</div>
+          </div>
+        </div>
+
+        <div>
+          <h1 style={{ fontSize: 32, fontWeight: 700, color: "#1a1a1a", lineHeight: 1.2, margin: 0 }}>
+            L&apos;assistant qui ne laisse rien passer.
+          </h1>
+          <p style={{ fontSize: 15, color: "#5a5a52", marginTop: 14, lineHeight: 1.6 }}>
+            Nesto mémorise vos prospects, prépare vos relances et vous alerte au bon moment — depuis WhatsApp.
+          </p>
+        </div>
+
       </div>
-      {error ? (
-        <p className="rounded-md border border-[#fecaca] bg-[#fef2f2] p-3 text-sm font-semibold text-[#991b1b] sm:col-span-2" role="alert">
-          {error}
-        </p>
-      ) : null}
-      <div className="sm:col-span-2">
-        <button
-          className="focus-ring inline-flex min-h-10 w-full items-center justify-center rounded-md bg-pine px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#123f32]"
-          disabled={loading}
-          type="submit"
-        >
-          {loading ? "Création de votre espace…" : "Créer mon compte et continuer"}
-        </button>
-        <p className="mt-3 text-center text-xs font-semibold leading-5 text-gray-500">
-          Déjà inscrit ? <Link className="font-black text-pine" href="/login">Se connecter</Link>
-        </p>
+
+      {/* Droite */}
+      <div style={{ background: "white", display: "flex", flexDirection: "column", justifyContent: "center", padding: "2.5rem 3rem" }}>
+        <div style={{ maxWidth: 420, width: "100%" }}>
+          <p style={{ fontSize: 11, fontWeight: 500, color: "#10b981", textTransform: "uppercase", letterSpacing: "0.8px", margin: "0 0 8px" }}>Créer mon espace</p>
+          <h2 style={{ fontSize: 26, fontWeight: 700, color: "#1a1a1a", margin: "0 0 6px" }}>Démarrer avec Nesto</h2>
+          <p style={{ fontSize: 14, color: "#7a7a6e", margin: "0 0 28px" }}>4 champs. 2 minutes. C&apos;est parti.</p>
+
+          <form onSubmit={submit} noValidate style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+            <button
+              type="button"
+              style={{
+                height: 50,
+                background: "#f3f4f6",
+                border: "1px solid #e5e7eb",
+                borderRadius: 16,
+                fontSize: 15,
+                fontWeight: 500,
+                color: "#1a1a1a",
+                cursor: "pointer",
+                fontFamily: "inherit",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
+                transition: "all 0.2s"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#e5e7eb";
+                e.currentTarget.style.borderColor = "#d1d5db";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#f3f4f6";
+                e.currentTarget.style.borderColor = "#e5e7eb";
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <text x="2" y="18" fontSize="16" fontWeight="bold">G</text>
+              </svg>
+              Continuer avec Google
+            </button>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "8px 0" }}>
+              <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }} />
+              <span style={{ fontSize: 12, color: "#9ca3af" }}>ou</span>
+              <div style={{ flex: 1, height: "1px", background: "#e5e7eb" }} />
+            </div>
+
+            {[
+              { label: "Email", key: "email", placeholder: "vous@agence.fr", type: "email" },
+              { label: "Numéro WhatsApp", key: "phone", placeholder: "+689 XX XX XX", type: "tel" },
+              { label: "Nom de l'agence", key: "agencyName", placeholder: "Votre agence", type: "text" },
+              { label: "Mot de passe", key: "password", placeholder: "8 caractères min.", type: "password" },
+            ].map(({ label, key, placeholder, type }) => (
+              <label key={key} style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                <span style={{ fontSize: 13, fontWeight: 500, color: "#374151" }}>{label}</span>
+                <input
+                  type={type}
+                  placeholder={placeholder}
+                  value={form[key as keyof typeof form]}
+                  onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+                  style={{ height: 48, borderRadius: 12, border: "1px solid #e5e7eb", padding: "0 14px", fontSize: 14, background: "#f9fafb", outline: "none", fontFamily: "inherit", transition: "border-color 0.2s" }}
+                  onFocus={(e) => e.currentTarget.style.borderColor = "#10b981"}
+                  onBlur={(e) => e.currentTarget.style.borderColor = "#e5e7eb"}
+                />
+              </label>
+            ))}
+
+            {error && (
+              <p style={{ background: "#fef2f2", border: "1px solid #fca5a5", borderRadius: 12, padding: "12px 14px", fontSize: 13, color: "#991b1b", margin: 0 }}>
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              style={{
+                height: 50,
+                background: loading ? "#6ee7b7" : "#10b981",
+                color: "white",
+                border: "none",
+                borderRadius: 16,
+                fontSize: 15,
+                fontWeight: 600,
+                cursor: loading ? "not-allowed" : "pointer",
+                fontFamily: "inherit",
+                transition: "all 0.2s",
+                marginTop: 4
+              }}
+              onMouseEnter={(e) => !loading && (e.currentTarget.style.background = "#059669")}
+              onMouseLeave={(e) => !loading && (e.currentTarget.style.background = "#10b981")}
+            >
+              {loading ? "Création en cours…" : "Créer mon compte →"}
+            </button>
+
+            <p style={{ textAlign: "center", fontSize: 13, color: "#7a7a6e", margin: "16px 0 0" }}>
+              Déjà inscrit ?{" "}
+              <Link href="/login" style={{ color: "#10b981", fontWeight: 600, textDecoration: "none" }}>Se connecter</Link>
+            </p>
+          </form>
+        </div>
       </div>
-    </form>
+    </div>
   );
 }
