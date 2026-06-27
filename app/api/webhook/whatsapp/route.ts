@@ -113,7 +113,11 @@ export async function POST(request: NextRequest) {
       });
 
       if (insertError) {
-        console.error("Error storing WhatsApp message:", insertError);
+        console.error("Error storing WhatsApp message:", {
+          error: insertError,
+          message: insertError?.message,
+          details: insertError?.details
+        });
         return NextResponse.json({
           success: true,
           message: "Message received but not stored"
