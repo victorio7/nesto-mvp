@@ -1,7 +1,13 @@
 import Anthropic from "@anthropic-ai/sdk";
 
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error(
+    "[MessageResponder] ANTHROPIC_API_KEY is not configured. Auto-reply will fail."
+  );
+}
+
 const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
+  apiKey: process.env.ANTHROPIC_API_KEY || "",
 });
 
 const SYSTEM_PROMPT = `Tu es Clapy, l'assistant commercial immobilier. Tu aides les prospects à préciser leur recherche immobilière.
