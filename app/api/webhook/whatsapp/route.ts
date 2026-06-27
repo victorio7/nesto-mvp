@@ -3,7 +3,29 @@ import { createSupabaseAdminClientOrNull } from "@/lib/supabase/admin";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    let body: any;
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.error("[WhatsApp Webhook] JSON parse error:", {
+        message: parseError instanceof Error ? parseError.message : String(parseError),
+        contentType: request.headers.get("content-type")
+      });
+
+      // Try to get the raw body for debugging
+      try {
+        const rawText = await request.text();
+        console.log("[WhatsApp Webhook] Raw body (first 500 chars):", rawText.substring(0, 500));
+      } catch (textError) {
+        console.error("[WhatsApp Webhook] Could not read raw body");
+      }
+
+      return NextResponse.json(
+        { error: "Invalid JSON in request body" },
+        { status: 400 }
+      );
+    }
+
     console.log("[WhatsApp Webhook] Received:", {
       smsMessageSid: body.SmsMessageSid,
       from: body.From,
