@@ -14,7 +14,7 @@ export function ClientWaitingScreen({ firstName }: { firstName: string }) {
           Bonjour {firstName}, notre equipe finalise la connexion de vos outils.
         </p>
         <p className="mt-2 text-sm font-semibold leading-6 text-gray-700">
-          Vous serez prevenu par WhatsApp ou email des que Nesto sera pret.
+          Vous serez prevenu par WhatsApp ou email des que Clapy sera pret.
         </p>
         <p className="mt-3 text-sm font-black text-pine">Delai moyen : moins de 24h.</p>
         <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
@@ -27,7 +27,7 @@ export function ClientWaitingScreen({ firstName }: { firstName: string }) {
             rel="noreferrer"
             target="_blank"
           >
-            Contacter l'equipe Nesto
+            Contacter l'équipe Clapy
           </a>
         </div>
       </section>
@@ -83,7 +83,7 @@ export function ClientReadyScreen({ firstName }: { firstName: string }) {
             </div>
           </div>
           <h2 className="text-2xl font-black text-ink">Pour agir maintenant</h2>
-          <p className="mt-2 text-gray-700">Utilisez WhatsApp pour relancer, valider ou demander une action. Nesto vous ecoute.</p>
+          <p className="mt-2 text-gray-700">Utilisez WhatsApp pour relancer, valider ou demander une action. Clapy vous ecoute.</p>
           <a
             href={NESTO_WHATSAPP_CONTACT_URL}
             target="_blank"

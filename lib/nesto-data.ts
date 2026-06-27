@@ -16,7 +16,7 @@ export type PropertyMemory = Property & {
   bestContactName: string | null;
 };
 
-export type NestoData = {
+export type ClapyData = {
   connected: boolean;
   empty: boolean;
   error: string | null;
@@ -30,7 +30,7 @@ export type NestoData = {
   latestInteractionByContactId: Record<string, string>;
 };
 
-export async function getNestoData(): Promise<NestoData> {
+export async function getClapyData(): Promise<ClapyData> {
   const supabase = createSupabaseAdminClientOrNull();
 
   if (!supabase) {
@@ -305,7 +305,7 @@ function normalizeConnection(row: IntegrationConnectionRow): IntegrationConnecti
   } as IntegrationConnection;
 }
 
-function emptyData(error: string | null, connected = false): NestoData {
+function emptyData(error: string | null, connected = false): ClapyData {
   return {
     connected,
     empty: true,

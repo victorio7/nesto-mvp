@@ -7,14 +7,14 @@ import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { getClientAccessState } from "@/lib/client-access-state";
-import { getNestoData } from "@/lib/nesto-data";
+import { getClapyData } from "@/lib/nesto-data";
 
 export default async function ContactDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const accessState = await getClientAccessState();
   if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
 
   const { id } = await params;
-  const data = await getNestoData();
+  const data = await getClapyData();
   const contact = data.contacts.find((item) => item.id === id);
   if (!contact) notFound();
 

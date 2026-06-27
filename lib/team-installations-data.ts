@@ -1,5 +1,5 @@
 import "server-only";
-import { getNestoReadyEmail, sendEmail } from "@/lib/email/send-email";
+import { getClapyReadyEmail, sendEmail } from "@/lib/email/send-email";
 import { createSupabaseAdminClientOrNull } from "@/lib/supabase/admin";
 import { isTeamAccessEnabled } from "@/lib/team-auth";
 
@@ -394,7 +394,7 @@ export async function updateTeamInstallationStatus(agentId: string, status: Team
     if (finalTestResult.error) return { ok: false, message: getErrorMessage(finalTestResult.error) };
 
     if (text(existingData.global_status) !== "installed") {
-      const readyEmail = getNestoReadyEmail(firstNameFrom(agent.name));
+      const readyEmail = getClapyReadyEmail(firstNameFrom(agent.name));
       await sendEmail({
         to: agent.email,
         ...readyEmail

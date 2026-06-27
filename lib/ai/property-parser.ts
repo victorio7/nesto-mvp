@@ -57,7 +57,7 @@ export async function parsePropertyWithAI(rawContent: string, sourceUrl = ""): P
         },
         {
           role: "user",
-          content: `Source URL: ${sourceUrl}\n\nContenu brut:\n${rawContent}\n\nRetourne exactement les champs demandes par le schema Nesto.`
+          content: `Source URL: ${sourceUrl}\n\nContenu brut:\n${rawContent}\n\nRetourne exactement les champs demandes par le schema Clapy.`
         }
       ]
     });

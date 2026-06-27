@@ -38,7 +38,7 @@ export default async function TeamInstallationsPage({
     <TeamShell>
       <PageHeader
         title="Installations à traiter"
-        description="Vue interne equipe Nesto. Les clients gardent une experience simple ; ici, l'equipe voit quoi finaliser en priorite."
+        description="Vue interne equipe Clapy. Les clients gardent une experience simple ; ici, l'equipe voit quoi finaliser en priorite."
       />
 
       {!data.enabled ? <LockedNotice /> : null}
@@ -77,7 +77,7 @@ export default async function TeamInstallationsPage({
               <p className="text-sm font-semibold leading-6 text-gray-600">
                 {showHiddenTests
                   ? "Aucun ancien dossier de test n'est masqué."
-                  : "Aucune installation à traiter pour le moment. Les nouveaux agents clients apparaîtront ici dès que leur espace Nesto sera créé."}
+                  : "Aucune installation à traiter pour le moment. Les nouveaux agents clients apparaîtront ici dès que leur espace Clapy sera créé."}
               </p>
             </Panel>
           )}

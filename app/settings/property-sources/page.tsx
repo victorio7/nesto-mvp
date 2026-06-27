@@ -64,7 +64,7 @@ export default async function PropertySourcesPage() {
         <Panel title="Sources configurees">
           {error ? (
             <p className="mb-4 rounded-md border border-[#fde68a] bg-[#fffbeb] p-3 text-sm font-semibold text-[#92400e]">
-              Sources momentanement indisponibles. Nesto gardera les informations deja connues.
+              Sources momentanement indisponibles. Clapy gardera les informations deja connues.
             </p>
           ) : null}
           {sources.length ? (
@@ -80,7 +80,7 @@ export default async function PropertySourcesPage() {
             />
           ) : (
             <div className="rounded-md border border-line bg-[#fbfaf5] p-4 text-sm font-semibold leading-6 text-gray-600">
-              Aucune source configuree pour le moment. Ajoutez le site de l'agence depuis l'installation pour que Nesto commence la surveillance.
+              Aucune source configuree pour le moment. Ajoutez le site de l'agence depuis l'installation pour que Clapy commence la surveillance.
             </div>
           )}
           <div className="mt-5 rounded-md border border-wood/30 bg-[#fffaf0] p-4">

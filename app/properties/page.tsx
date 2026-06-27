@@ -7,7 +7,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { getClientAccessState } from "@/lib/client-access-state";
-import { getNestoData, type PropertyMemory } from "@/lib/nesto-data";
+import { getClapyData, type PropertyMemory } from "@/lib/nesto-data";
 
 export const dynamic = "force-dynamic";
 
@@ -23,13 +23,13 @@ export default async function PropertiesPage() {
   const accessState = await getClientAccessState();
   if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
 
-  const data = await getNestoData();
+  const data = await getClapyData();
 
   return (
     <AppShell>
       <PageHeader
         title="Biens"
-        description="Les biens connus par Nesto : vos biens, ceux de l'agence et ceux detectes depuis les sources connectees."
+        description="Les biens connus par Clapy : vos biens, ceux de l'agence et ceux detectes depuis les sources connectees."
         actions={<Button href="/properties/import" variant="secondary">Importer depuis URL</Button>}
       />
 
@@ -114,7 +114,7 @@ function DataNotice({ message }: { message: string }) {
 function EmptyState() {
   return (
     <div className="rounded-md border border-line bg-white p-6 text-sm font-semibold leading-6 text-gray-600 shadow-sm">
-      Aucun bien pour le moment. Quand Nesto detecte ou importe un bien de l'agence, il apparait ici avec les prospects compatibles.
+      Aucun bien pour le moment. Quand Clapy detecte ou importe un bien de l'agence, il apparait ici avec les prospects compatibles.
     </div>
   );
 }

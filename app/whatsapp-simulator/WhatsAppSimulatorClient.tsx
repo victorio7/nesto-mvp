@@ -128,7 +128,7 @@ export function WhatsAppSimulatorClient() {
           <div>
             <p className="text-sm leading-6 text-gray-600">
               Ce test interne montre le fonctionnement cible : les prospects ecrivent au WhatsApp professionnel,
-              Nesto travaille en arriere-plan, puis les validations importantes arrivent sur le WhatsApp interne de l'agent.
+              Clapy travaille en arriere-plan, puis les validations importantes arrivent sur le WhatsApp interne de l'agent.
               En production, l'agent n'a pas besoin d'utiliser cette page.
             </p>
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -140,7 +140,7 @@ export function WhatsAppSimulatorClient() {
               <ChannelCard
                 icon={Smartphone}
                 label="WhatsApp agent"
-                text="Canal interne ou Nesto alerte l'agent et recoit les validations."
+                text="Canal interne ou Clapy alerte l'agent et recoit les validations."
               />
             </div>
           </div>
@@ -185,7 +185,7 @@ export function WhatsAppSimulatorClient() {
             {memory?.error ? <p className="mt-2 text-sm leading-6 text-[#991b1b]">{memory.error}</p> : null}
             <p className="mt-2 text-sm leading-6 text-gray-600">
               Les scenarios ecrivent cote serveur dans Supabase quand la configuration et le schema sont disponibles. Sans OpenAI
-              ou sans Supabase accessible, Nesto utilise les donnees locales de demonstration.
+              ou sans Supabase accessible, Clapy utilise les donnees locales de demonstration.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-5">
@@ -210,7 +210,7 @@ export function WhatsAppSimulatorClient() {
           empty="Lancez les scenarios B a F pour simuler les alertes et commandes sur le WhatsApp interne de l'agent."
           icon={Bot}
           messages={agentMessages}
-          title="2. Conversation agent avec Nesto"
+          title="2. Conversation agent avec Clapy"
           subtitle="WhatsApp personnel ou interne de l'agent"
         />
       </div>
@@ -238,7 +238,7 @@ export function WhatsAppSimulatorClient() {
                 </div>
               </div>
               <div className="rounded-md border border-line bg-[#fbfaf5] p-4">
-                <p className="font-black">Ce que Nesto a traite</p>
+                <p className="font-black">Ce que Clapy a traite</p>
                 <div className="mt-3 grid gap-2">
                   {summarizeRecords(result.records).map((item) => (
                     <p className="rounded-md bg-white px-3 py-2 text-sm font-semibold leading-6 text-gray-700" key={item}>
@@ -364,13 +364,13 @@ function ConversationPanel({
         {messages.length ? (
           <div className="space-y-3">
             {messages.map((message, index) => {
-              const isNesto = message.from === "Nesto";
+              const isClapy = message.from === "Clapy";
               const isSystem = message.from === "Site agence";
               return (
-                <div className={`flex ${isNesto || isSystem ? "justify-start" : "justify-end"}`} key={`${message.from}-${index}`}>
+                <div className={`flex ${isClapy || isSystem ? "justify-start" : "justify-end"}`} key={`${message.from}-${index}`}>
                   <div
                     className={`max-w-[88%] rounded-md p-3 text-sm leading-6 shadow-panel ${
-                      isSystem ? "bg-[#fff7df] text-ink" : isNesto ? "bg-white text-ink" : "bg-pine text-white"
+                      isSystem ? "bg-[#fff7df] text-ink" : isClapy ? "bg-white text-ink" : "bg-pine text-white"
                     }`}
                   >
                     <div className="mb-1 flex items-center gap-2 text-xs font-black uppercase tracking-normal opacity-70">

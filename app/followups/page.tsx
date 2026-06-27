@@ -23,7 +23,7 @@ export default async function FollowupsPage() {
     <AppShell>
       <PageHeader
         title="Relances preparees"
-        description="Nesto prepare les messages et vous les fait valider depuis WhatsApp."
+        description="Clapy prepare les messages et vous les fait valider depuis WhatsApp."
       />
       <div className="grid gap-5 lg:grid-cols-2">
         {followups.map(({ match, contact, property, message }) => (

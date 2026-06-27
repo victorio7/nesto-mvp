@@ -65,24 +65,24 @@ export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult>
 
 export function getWelcomeEmail(firstName: string) {
   return {
-    subject: "Bienvenue sur Nesto",
+    subject: "Bienvenue sur Clapy",
     text: [
       `Bonjour ${firstName},`,
       "",
-      "Votre espace Nesto est créé. Notre équipe va vous accompagner pour finaliser l’installation.",
+      "Votre espace Clapy est créé. Notre équipe va vous accompagner pour finaliser l’installation.",
       "",
       "WhatsApp reste votre poste de commande. Votre dashboard servira à consulter votre mémoire commerciale."
     ].join("\n")
   };
 }
 
-export function getNestoReadyEmail(firstName: string) {
+export function getClapyReadyEmail(firstName: string) {
   return {
-    subject: "Nesto est prêt",
+    subject: "Clapy est prêt",
     text: [
       `Bonjour ${firstName},`,
       "",
-      "Nesto est prêt. Vous pouvez accéder à votre mémoire commerciale.",
+      "Clapy est prêt. Vous pouvez accéder à votre mémoire commerciale.",
       "",
       "Pour agir, valider ou demander une relance, utilisez WhatsApp."
     ].join("\n")

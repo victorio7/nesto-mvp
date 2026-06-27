@@ -26,7 +26,7 @@ export default async function TeamInstallationDetailPage({ params }: { params: P
     <TeamShell>
       <PageHeader
         title={installation ? installation.agentName : "Dossier agent"}
-        description={installation ? `${installation.agencyName} - dossier installation agent` : "Vue interne equipe Nesto pour finaliser l'installation sans exposer de complexite au client."}
+        description={installation ? `${installation.agencyName} - dossier installation agent` : "Vue interne equipe Clapy pour finaliser l'installation sans exposer de complexite au client."}
         actions={<Button href="/team/installations" variant="secondary"><ArrowLeft size={16} /> Retour</Button>}
       />
 
@@ -76,7 +76,7 @@ export default async function TeamInstallationDetailPage({ params }: { params: P
               </div>
             </Panel>
 
-            <Panel eyebrow="Equipe Nesto" title="Notes internes">
+            <Panel eyebrow="Equipe Clapy" title="Notes internes">
               <div className="rounded-md border border-line bg-[#fbfaf5] p-4">
                 <div className="flex gap-3">
                   <NotebookText className="shrink-0 text-pine" size={18} />

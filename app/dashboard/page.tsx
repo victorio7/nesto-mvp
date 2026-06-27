@@ -14,7 +14,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { getClientAccessState } from "@/lib/client-access-state";
-import { getNestoData } from "@/lib/nesto-data";
+import { getClapyData } from "@/lib/nesto-data";
 
 export const dynamic = "force-dynamic";
 
@@ -35,7 +35,7 @@ const statusLabels: Record<string, string> = {
 };
 
 export default async function DashboardPage() {
-  const [data, accessState] = await Promise.all([getNestoData(), getClientAccessState()]);
+  const [data, accessState] = await Promise.all([getClapyData(), getClientAccessState()]);
   if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
   const hotContacts = data.contacts.filter((contact) => contact.status === "hot").slice(0, 2);
   const incompleteContacts = data.contacts.filter((contact) => contact.missing_fields.length).slice(0, 2);
@@ -49,21 +49,21 @@ export default async function DashboardPage() {
   return (
     <AppShell>
       <PageHeader
-        title="Memoire Nesto"
-        description="Votre memoire Nesto est consultable ici. Pour agir, valider ou demander une relance, utilisez WhatsApp."
+        title="Memoire Clapy"
+        description="Votre memoire Clapy est consultable ici. Pour agir, valider ou demander une relance, utilisez WhatsApp."
       />
 
       <div className="mb-6 rounded-md border border-wood/25 bg-[#fffaf0] p-5">
         <p className="text-sm font-black uppercase tracking-normal text-wood">Simplement</p>
-        <h2 className="mt-1 text-xl font-black">Nesto organise ce que vous n'avez pas le temps d'organiser.</h2>
+        <h2 className="mt-1 text-xl font-black">Clapy organise ce que vous n'avez pas le temps d'organiser.</h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-gray-700">
-          Vous gerez la relation. Nesto memorise, relance et vous alerte au bon moment.
+          Vous gerez la relation. Clapy memorise, relance et vous alerte au bon moment.
           Cette page sert uniquement a retrouver vos prospects, biens, opportunites et connexions.
         </p>
       </div>
 
-      {data.error ? <DataNotice message="Certaines donnees Supabase ne sont pas disponibles. Nesto garde l'interface lisible pendant la synchronisation." /> : null}
-      {data.empty && !data.error ? <DataNotice message="Nesto attend ses premieres donnees. Quand vos premiers echanges seront traites, votre memoire commerciale apparaitra ici." /> : null}
+      {data.error ? <DataNotice message="Certaines donnees Supabase ne sont pas disponibles. Clapy garde l'interface lisible pendant la synchronisation." /> : null}
+      {data.empty && !data.error ? <DataNotice message="Clapy attend ses premieres donnees. Quand vos premiers echanges seront traites, votre memoire commerciale apparaitra ici." /> : null}
 
       <div className="grid gap-5 xl:grid-cols-2">
         <Panel eyebrow="A consulter" title="Contacts a suivre">
@@ -95,7 +95,7 @@ export default async function DashboardPage() {
           </div>
         </Panel>
 
-        <Panel eyebrow="Nesto a detecte pour vous" title="Opportunites detectees">
+        <Panel eyebrow="Clapy a detecte pour vous" title="Opportunites detectees">
           <div className="space-y-3">
             {latestActions.map((action) => (
               <Opportunity key={action.id} text={`${action.title}${action.summary ? ` - ${action.summary}` : ""}`} />
@@ -213,14 +213,14 @@ function nextContactAction(contact: { missing_fields: string[]; status: string }
   return "relancer au bon moment";
 }
 
-function formatMatchOpportunity(match: { contact_id: string; property_id: string; score: number }, data: Awaited<ReturnType<typeof getNestoData>>) {
+function formatMatchOpportunity(match: { contact_id: string; property_id: string; score: number }, data: Awaited<ReturnType<typeof getClapyData>>) {
   const contactName = getContactName(match.contact_id, data);
   const property = data.properties.find((item) => item.id === match.property_id);
   const propertyTitle = property?.title ?? "un bien";
   return `${propertyTitle} correspond a ${contactName} avec un score de ${match.score} %.`;
 }
 
-function getContactName(contactId: string, data: Awaited<ReturnType<typeof getNestoData>>) {
+function getContactName(contactId: string, data: Awaited<ReturnType<typeof getClapyData>>) {
   const contact = data.contacts.find((item) => item.id === contactId);
   return contact ? `${contact.first_name} ${contact.last_name}`.trim() : "Contact";
 }

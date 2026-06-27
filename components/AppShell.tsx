@@ -31,7 +31,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Bot size={21} />
           </span>
           <span>
-            <span className="block text-lg font-black">Nesto</span>
+            <span className="block text-lg font-black">Clapy</span>
             <span className="text-xs font-medium text-gray-500">Votre bras droit commercial</span>
           </span>
         </Link>
@@ -58,7 +58,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="lg:pl-72">
         <header className="sticky top-0 z-20 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur lg:hidden">
           <Link className="flex items-center gap-2 font-black" href="/dashboard">
-            <Bot size={20} /> Nesto
+            <Bot size={20} /> Clapy
           </Link>
         </header>
         <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{children}</main>

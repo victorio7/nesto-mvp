@@ -13,7 +13,7 @@ export function TeamShell({ children }: { children: ReactNode }) {
               <Bot size={21} />
             </span>
             <span>
-              <span className="block text-lg font-black">Nesto Équipe</span>
+              <span className="block text-lg font-black">Clapy Équipe</span>
               <span className="text-xs font-medium text-gray-500">Espace interne</span>
             </span>
           </Link>

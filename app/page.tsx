@@ -24,11 +24,11 @@ const steps = [
     text: "WhatsApp, votre site agence et vos outils essentiels."
   },
   {
-    title: "Nesto organise",
+    title: "Clapy organise",
     text: "Chaque demande devient une fiche claire et complète."
   },
   {
-    title: "Nesto retrouve",
+    title: "Clapy retrouve",
     text: "Il rapproche vos prospects des bons biens."
   },
   {
@@ -46,7 +46,7 @@ const whatsappCommands = [
   "Relance demain."
 ];
 
-const handledByNesto = [
+const handledByClapy = [
   "Demande les informations manquantes",
   "Complète et classe les fiches prospects",
   "Résume les conversations",
@@ -72,7 +72,7 @@ const included = [
   "Matching prospects et biens",
   "Relances simples automatisées",
   "Validation depuis WhatsApp",
-  "Accompagnement par l'équipe Nesto"
+  "Accompagnement par l'équipe Clapy"
 ];
 
 export default async function LandingPage({
@@ -97,7 +97,7 @@ export default async function LandingPage({
               N
             </span>
             <span>
-              <span className="block text-lg font-black leading-none">Nesto</span>
+              <span className="block text-lg font-black leading-none">Clapy</span>
               <span className="mt-1 hidden text-xs font-bold text-gray-500 sm:block">Bras droit commercial immobilier</span>
             </span>
           </Link>
@@ -144,7 +144,7 @@ export default async function LandingPage({
               Votre bras droit commercial en immobilier.
             </h1>
             <p className="mt-6 max-w-xl text-lg font-semibold leading-8 text-gray-700">
-              Nesto mémorise vos prospects, prépare le suivi et vous alerte au bon moment. Vous, vous gérez la relation.
+              Clapy mémorise vos prospects, prépare le suivi et vous alerte au bon moment. Vous, vous gérez la relation.
             </p>
             <p className="mt-5 max-w-xl border-l-2 border-pine pl-4 text-base font-black leading-7 text-ink">
               Pas de logiciel compliqué. Vous pilotez tout depuis WhatsApp.
@@ -180,7 +180,7 @@ export default async function LandingPage({
                     <MessageCircle size={19} />
                   </span>
                   <div>
-                    <p className="font-black">Nesto</p>
+                    <p className="font-black">Clapy</p>
                     <p className="text-xs font-bold text-gray-500">Assistant actif sur WhatsApp</p>
                   </div>
                 </div>
@@ -189,7 +189,7 @@ export default async function LandingPage({
               <div className="space-y-3 py-4">
                 <ChatBubble speaker="Vous" text="Qui dois-je relancer aujourd'hui ?" />
                 <ChatBubble
-                  speaker="Nesto"
+                  speaker="Clapy"
                   text="Sarah correspond à 94 % avec le nouveau F3 Punaauia. La relance est prête."
                   variant="nesto"
                 />
@@ -202,7 +202,7 @@ export default async function LandingPage({
                 </div>
               </div>
               <div className="rounded-lg bg-[#f8f5ee] px-4 py-3 text-sm font-bold leading-6 text-gray-700">
-                Vous gérez la relation. Nesto assure le suivi.
+                Vous gérez la relation. Clapy assure le suivi.
               </div>
             </div>
           </div>
@@ -256,14 +256,14 @@ export default async function LandingPage({
       <section className="border-y border-[#e7dcc8] bg-[#f8f5ee]">
         <div className="landing-reveal mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr]">
-            <SectionIntro eyebrow="Simplement" title="Nesto prépare le suivi. Vous gardez la relation.">
+            <SectionIntro eyebrow="Simplement" title="Clapy prépare le suivi. Vous gardez la relation.">
               Il mémorise, classe, retrouve et vous alerte. Vous, vous agissez.
             </SectionIntro>
             <div className="grid gap-4 sm:grid-cols-3">
-              <PremiumPoint icon={<Brain size={21} />} title="Nesto mémorise">
+              <PremiumPoint icon={<Brain size={21} />} title="Clapy mémorise">
                 Vos prospects, leurs critères et la prochaine action à faire.
               </PremiumPoint>
-              <PremiumPoint icon={<BellRing size={21} />} title="Nesto vous alerte">
+              <PremiumPoint icon={<BellRing size={21} />} title="Clapy vous alerte">
                 Au bon moment, avant qu'une opportunité se refroidisse.
               </PremiumPoint>
               <PremiumPoint icon={<PhoneCall size={21} />} title="Vous agissez">
@@ -273,7 +273,7 @@ export default async function LandingPage({
           </div>
           <div className="mt-12 rounded-lg bg-pine px-6 py-7 text-white shadow-xl shadow-pine/10 sm:px-8">
             <p className="text-center text-xl font-black leading-8 sm:text-2xl">
-              Vous gérez la relation. Nesto mémorise, relance et vous alerte au bon moment.
+              Vous gérez la relation. Clapy mémorise, relance et vous alerte au bon moment.
             </p>
           </div>
         </div>
@@ -282,8 +282,8 @@ export default async function LandingPage({
       <section className="bg-white">
         <div className="landing-reveal mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
-            <SectionIntro eyebrow="Un fonctionnement naturel" title="Vous créez la relation. Nesto assure le suivi." centered>
-              Quatre étapes simples. Nesto s'intègre à vos outils et assure le suivi.
+            <SectionIntro eyebrow="Un fonctionnement naturel" title="Vous créez la relation. Clapy assure le suivi." centered>
+              Quatre étapes simples. Clapy s'intègre à vos outils et assure le suivi.
             </SectionIntro>
           </div>
           <div className="relative mt-12 grid gap-4 md:grid-cols-4">
@@ -311,20 +311,20 @@ export default async function LandingPage({
                   <MessageCircle size={19} />
                 </span>
                 <div>
-                  <p className="font-black">Nesto</p>
+                  <p className="font-black">Clapy</p>
                   <p className="text-xs font-bold text-white/65">Disponible</p>
                 </div>
               </div>
               <div className="space-y-4 px-2 py-5">
                 <ChatBubble speaker="Vous" text="Trouve les prospects compatibles avec ce bien." />
                 <ChatBubble
-                  speaker="Nesto"
+                  speaker="Clapy"
                   text="6 prospects correspondent. Sarah arrive en tête avec 94 %. Voir la relance ?"
                   variant="nesto"
                 />
                 <ChatBubble speaker="Vous" text="Détails." />
                 <ChatBubble
-                  speaker="Nesto"
+                  speaker="Clapy"
                   text="Budget, secteur et type de bien correspondent. À vérifier : sa date d'entrée."
                   variant="nesto"
                 />
@@ -342,10 +342,10 @@ export default async function LandingPage({
             <p className="text-sm font-black uppercase text-[#e5bd75]">Votre poste de commande</p>
             <h2 className="mt-4 max-w-xl text-4xl font-black leading-tight sm:text-5xl">Tout se pilote depuis WhatsApp.</h2>
             <p className="mt-6 max-w-xl text-lg leading-8 text-white/72">
-              Donnez une instruction, transmettez un résumé d'appel ou validez une action. Nesto vous répond simplement.
+              Donnez une instruction, transmettez un résumé d'appel ou validez une action. Clapy vous répond simplement.
             </p>
             <p className="mt-5 max-w-xl font-black leading-7 text-white">
-              Pas besoin de passer votre journée dans un dashboard. Nesto travaille là où vous travaillez déjà.
+              Pas besoin de passer votre journée dans un dashboard. Clapy travaille là où vous travaillez déjà.
             </p>
             <div className="mt-8 grid gap-3 sm:grid-cols-2">
               {whatsappCommands.map((command) => (
@@ -361,14 +361,14 @@ export default async function LandingPage({
       <section className="bg-[#f8f5ee]">
         <div className="landing-reveal mx-auto grid max-w-7xl items-center gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8">
           <div>
-            <SectionIntro eyebrow="Après un appel" title="Envoyez simplement l'essentiel à Nesto.">
-              Dictez ou écrivez le budget, le secteur et l'urgence. Nesto s'occupe du reste.
+            <SectionIntro eyebrow="Après un appel" title="Envoyez simplement l'essentiel à Clapy.">
+              Dictez ou écrivez le budget, le secteur et l'urgence. Clapy s'occupe du reste.
             </SectionIntro>
             <div className="mt-8 space-y-3">
               {[
                 ["1", "Vous terminez votre appel"],
                 ["2", "Vous envoyez un résumé sur WhatsApp"],
-                ["3", "Nesto crée et classe la fiche"],
+                ["3", "Clapy crée et classe la fiche"],
                 ["4", "Il surveille les biens et prépare le suivi"]
               ].map(([number, label]) => (
                 <div className="flex items-center gap-4 rounded-lg border border-line bg-white px-4 py-3 shadow-sm transition hover:translate-x-1 hover:shadow-md" key={number}>
@@ -382,7 +382,7 @@ export default async function LandingPage({
           <div className="rounded-lg border border-line bg-white p-5 shadow-[0_25px_70px_rgba(17,24,39,0.10)] sm:p-7">
             <div className="flex items-center justify-between gap-4 border-b border-line pb-5">
               <div>
-                <p className="text-xs font-black uppercase text-wood">Un résumé, puis Nesto prend le relais</p>
+                <p className="text-xs font-black uppercase text-wood">Un résumé, puis Clapy prend le relais</p>
                 <h3 className="mt-2 text-2xl font-black">Sarah ne sera pas oubliée.</h3>
               </div>
               <span className="grid size-12 shrink-0 place-items-center rounded-full bg-[#edf7f1] text-pine">
@@ -395,7 +395,7 @@ export default async function LandingPage({
                 text="Nouveau contact Sarah : cherche F3 Punaauia, budget 220 000 F, CDI, pas d'animaux, entrée juillet."
               />
               <ChatBubble
-                speaker="Nesto"
+                speaker="Clapy"
                 text="Fiche Sarah créée. Prospect chaud. Je surveille les F3 à Punaauia jusqu'à 220 000 F."
                 variant="nesto"
               />
@@ -414,10 +414,10 @@ export default async function LandingPage({
           <div className="rounded-lg border border-pine/15 bg-[#edf7f1] p-6 sm:p-8">
             <div className="flex items-center gap-3">
               <span className="grid size-11 place-items-center rounded-lg bg-pine text-white"><Sparkles size={20} /></span>
-              <h2 className="text-2xl font-black">Ce que Nesto gère seul</h2>
+              <h2 className="text-2xl font-black">Ce que Clapy gère seul</h2>
             </div>
             <div className="mt-7 grid gap-3 sm:grid-cols-2">
-              {handledByNesto.map((task) => (
+              {handledByClapy.map((task) => (
                 <TaskLine icon={<Check size={16} />} key={task}>{task}</TaskLine>
               ))}
             </div>
@@ -452,14 +452,14 @@ export default async function LandingPage({
                 <p className="text-xs font-black uppercase text-white/60">100 premiers agents</p>
                 <p className="mt-2 text-2xl font-black">1 mois gratuit</p>
                 <p className="mt-2 text-sm font-semibold leading-6 text-white/75">
-                  Votre mois gratuit commence lorsque Nesto est installé et prêt à être testé avec vous.
+                  Votre mois gratuit commence lorsque Clapy est installé et prêt à être testé avec vous.
                 </p>
               </div>
             </div>
             <div className="p-7 sm:p-10">
               <div className="flex flex-wrap items-start justify-between gap-5 border-b border-line pb-6">
                 <div>
-                  <p className="text-sm font-black text-pine">Nesto Assistant Immobilier</p>
+                  <p className="text-sm font-black text-pine">Clapy Assistant Immobilier</p>
                   <div className="mt-3 flex items-end gap-2">
                     <span className="text-6xl font-black leading-none">99 €</span>
                     <span className="pb-2 text-lg font-black text-gray-500">/mois</span>
@@ -502,14 +502,14 @@ export default async function LandingPage({
       <section className="bg-white">
         <div className="landing-reveal mx-auto grid max-w-7xl items-center gap-12 px-4 py-24 sm:px-6 lg:grid-cols-[0.9fr_1.1fr] lg:px-8">
           <div>
-            <SectionIntro eyebrow="Installation accompagnée" title="Nesto s'installe avec vous, simplement.">
+            <SectionIntro eyebrow="Installation accompagnée" title="Clapy s'installe avec vous, simplement.">
               Notre équipe relie vos outils et vérifie que tout fonctionne. Vous n'avez rien de technique à gérer.
             </SectionIntro>
             <div className="mt-7 space-y-3">
               {[
                 "Nous recueillons vos informations essentielles",
                 "Notre équipe prépare vos connexions",
-                "Nous testons Nesto avec votre activité",
+                "Nous testons Clapy avec votre activité",
                 "Vous êtes prévenu dès que votre assistant est prêt"
               ].map((item) => (
                 <div className="flex items-center gap-3 text-sm font-bold text-gray-700" key={item}>
@@ -543,7 +543,7 @@ export default async function LandingPage({
                 className="focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-pine px-6 py-3 text-sm font-black text-white shadow-lg shadow-pine/15 transition hover:-translate-y-0.5 hover:bg-[#123f32] hover:shadow-xl"
                 href="/signup"
               >
-                Démarrer avec Nesto <ArrowRight size={17} />
+                Démarrer avec Clapy <ArrowRight size={17} />
               </Link>
               <a
                 className="focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-black text-ink ring-1 ring-line transition hover:-translate-y-0.5 hover:shadow-lg"
@@ -562,9 +562,9 @@ export default async function LandingPage({
         <div className="mx-auto max-w-7xl px-4 py-8 text-center sm:px-6 lg:px-8">
           <div className="flex items-center justify-center gap-2">
             <span className="grid size-8 place-items-center rounded-lg bg-pine font-black text-white text-sm">N</span>
-            <p className="font-black text-ink">Nesto</p>
+            <p className="font-black text-ink">Clapy</p>
           </div>
-          <p className="mt-3 text-sm font-semibold text-gray-600">Vous gérez la relation. Nesto assure le suivi.</p>
+          <p className="mt-3 text-sm font-semibold text-gray-600">Vous gérez la relation. Clapy assure le suivi.</p>
         </div>
       </footer>
     </main>
@@ -666,12 +666,12 @@ function ChatBubble({
   text: string;
   variant?: "agent" | "nesto";
 }) {
-  const isNesto = variant === "nesto";
+  const isClapy = variant === "nesto";
 
   return (
-    <div className={isNesto ? "ml-auto max-w-[92%]" : "mr-auto max-w-[92%]"}>
-      <p className={`mb-1.5 text-xs font-black uppercase ${isNesto ? "text-pine" : "text-gray-500"}`}>{speaker}</p>
-      <p className={`rounded-lg px-4 py-3 text-sm font-semibold leading-6 shadow-sm ${isNesto ? "bg-[#dff4e7] text-[#173d32]" : "bg-white text-ink ring-1 ring-black/5"}`}>
+    <div className={isClapy ? "ml-auto max-w-[92%]" : "mr-auto max-w-[92%]"}>
+      <p className={`mb-1.5 text-xs font-black uppercase ${isClapy ? "text-pine" : "text-gray-500"}`}>{speaker}</p>
+      <p className={`rounded-lg px-4 py-3 text-sm font-semibold leading-6 shadow-sm ${isClapy ? "bg-[#dff4e7] text-[#173d32]" : "bg-white text-ink ring-1 ring-black/5"}`}>
         "{text}"
       </p>
     </div>

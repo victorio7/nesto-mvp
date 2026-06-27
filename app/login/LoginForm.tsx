@@ -37,7 +37,7 @@ export function LoginForm({ nextPath = "/dashboard" }: { nextPath?: string }) {
 
       window.location.href = nextPath;
     } catch (loginError) {
-      console.error("Nesto login request failed", loginError);
+      console.error("Clapy login request failed", loginError);
       setError("Connexion impossible pour le moment. Réessayez dans un instant.");
       setLoading(false);
     }
@@ -78,7 +78,7 @@ export function LoginForm({ nextPath = "/dashboard" }: { nextPath?: string }) {
         disabled={loading}
         type="submit"
       >
-        {loading ? "Connexion…" : "Entrer dans mon espace Nesto"}
+        {loading ? "Connexion…" : "Entrer dans mon espace Clapy"}
       </button>
       <p className="text-center text-sm text-gray-600">
         Pas encore de compte ? <Link className="font-bold text-pine" href="/signup">Créer mon compte</Link>

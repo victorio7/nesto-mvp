@@ -18,7 +18,7 @@ type CheckoutInput = {
 };
 
 const plan = {
-  plan_name: "Nesto Assistant Immobilier",
+  plan_name: "Clapy Assistant Immobilier",
   monthly_price: 99,
   commitment_months: 0,
   trial_days: 30
@@ -38,7 +38,7 @@ export async function createCheckoutSession(input: CheckoutInput = {}): Promise<
   const appUrl = getAppUrl(input.origin);
   const agencyId = sanitizeText(input.agencyId || "agency-demo", 120);
   const email = sanitizeEmail(input.email);
-  const name = sanitizeText(input.name || "Agence Nesto", 160);
+  const name = sanitizeText(input.name || "Agence Clapy", 160);
 
   if (!isStripeConfigured()) {
     await upsertSimulatedSubscription(agencyId);

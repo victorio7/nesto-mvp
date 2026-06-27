@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { getClientAccessState } from "@/lib/client-access-state";
-import { getNestoData } from "@/lib/nesto-data";
+import { getClapyData } from "@/lib/nesto-data";
 import type { Contact } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -25,13 +25,13 @@ export default async function ContactsPage() {
   const accessState = await getClientAccessState();
   if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
 
-  const data = await getNestoData();
+  const data = await getClapyData();
 
   return (
     <AppShell>
       <PageHeader
         title="Contacts"
-        description="La base prospects que Nesto organise pour vous. Vous consultez, corrigez si besoin, mais l'action quotidienne reste dans WhatsApp."
+        description="La base prospects que Clapy organise pour vous. Vous consultez, corrigez si besoin, mais l'action quotidienne reste dans WhatsApp."
       />
 
       <Panel eyebrow="Filtres simples" title="Retrouver rapidement les bons profils">
@@ -120,7 +120,7 @@ function DataNotice({ message }: { message: string }) {
 function EmptyState() {
   return (
     <div className="rounded-md border border-line bg-white p-6 text-sm font-semibold leading-6 text-gray-600 shadow-sm">
-      Aucun contact pour le moment. Quand un prospect ecrit ou quand vous envoyez un resume d'appel a Nesto, sa fiche apparait ici.
+      Aucun contact pour le moment. Quand un prospect ecrit ou quand vous envoyez un resume d'appel a Clapy, sa fiche apparait ici.
     </div>
   );
 }

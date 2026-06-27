@@ -27,11 +27,11 @@ export default async function BillingPage() {
   return (
     <AppShell>
       <PageHeader
-        title="Demarrer avec Nesto"
+        title="Demarrer avec Clapy"
         description="Un bras droit commercial pour suivre vos prospects, vos biens et vos relances depuis WhatsApp."
       />
       <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-        <Panel title="Nesto Assistant Immobilier" eyebrow="99 euros / mois">
+        <Panel title="Clapy Assistant Immobilier" eyebrow="99 euros / mois">
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-5xl font-black">{demoSubscription.monthly_price} €</span>
             <span className="font-bold text-gray-600">/mois</span>

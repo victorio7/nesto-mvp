@@ -148,7 +148,7 @@ export function SignupForm() {
                 N
               </div>
               <div>
-                <div style={{ fontSize: 18, fontWeight: 700, color: "#111827" }}>Nesto</div>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#111827" }}>Clapy</div>
                 <div style={{ fontSize: 12, color: "#7a7a6e", marginTop: "2px" }}>Bras droit commercial</div>
               </div>
             </div>
@@ -170,7 +170,7 @@ export function SignupForm() {
                 lineHeight: 1.6,
                 margin: "1.5rem 0 0"
               }}>
-                Nesto mémorise vos prospects, prépare vos relances et vous alerte au bon moment — depuis WhatsApp.
+                Clapy mémorise vos prospects, prépare vos relances et vous alerte au bon moment — depuis WhatsApp.
               </p>
             </div>
           </div>
@@ -207,7 +207,7 @@ export function SignupForm() {
                   }}>
                     N
                   </div>
-                  <div style={{ fontSize: 16, fontWeight: 700, color: "#111827" }}>Nesto</div>
+                  <div style={{ fontSize: 16, fontWeight: 700, color: "#111827" }}>Clapy</div>
                 </div>
               </div>
             )}
@@ -228,7 +228,7 @@ export function SignupForm() {
               color: "#111827",
               margin: "0 0 8px"
             }}>
-              Démarrer avec Nesto
+              Démarrer avec Clapy
             </h2>
             <p style={{
               fontSize: 15,

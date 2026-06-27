@@ -14,7 +14,7 @@ export default async function HelpPage() {
     <AppShell>
       <PageHeader
         title="Aide"
-        description="Nesto se pilote depuis WhatsApp. Cette page sert simplement a vous rappeler quoi demander et comment joindre l'equipe."
+        description="Clapy se pilote depuis WhatsApp. Cette page sert simplement a vous rappeler quoi demander et comment joindre l'equipe."
       />
 
       <div className="grid gap-5 lg:grid-cols-[1fr_0.9fr]">
@@ -35,7 +35,7 @@ export default async function HelpPage() {
           </div>
         </Panel>
 
-        <Panel title="Contacter l'equipe Nesto">
+        <Panel title="Contacter l'equipe Clapy">
           <div className="rounded-md border border-wood/25 bg-[#fffaf0] p-4">
             <div className="flex gap-3">
               <span className="grid size-10 shrink-0 place-items-center rounded-md bg-pine text-white">
@@ -44,7 +44,7 @@ export default async function HelpPage() {
               <div>
                 <p className="font-black text-ink">Une connexion manque ?</p>
                 <p className="mt-2 text-sm font-semibold leading-6 text-gray-700">
-                  Envoyez un message a l'equipe Nesto. Nous vous accompagnons pour finaliser vos outils sans jargon technique.
+                  Envoyez un message a l'equipe Clapy. Nous vous accompagnons pour finaliser vos outils sans jargon technique.
                 </p>
               </div>
             </div>
@@ -54,7 +54,7 @@ export default async function HelpPage() {
               rel="noreferrer"
               target="_blank"
             >
-              <MessageCircle size={16} /> Contacter l'equipe Nesto
+              <MessageCircle size={16} /> Contacter l'équipe Clapy
             </a>
           </div>
         </Panel>

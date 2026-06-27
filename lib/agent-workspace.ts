@@ -45,7 +45,7 @@ export async function getActiveAgentWorkspace(supabase = createSupabaseAdminClie
 
 export async function getActiveAgentWorkspaceOrThrow(supabase = createSupabaseAdminClientOrNull()) {
   const workspace = await getActiveAgentWorkspace(supabase);
-  if (!workspace) throw new Error("Aucun espace agent Nesto actif.");
+  if (!workspace) throw new Error("Aucun espace agent Clapy actif.");
   return workspace;
 }
 

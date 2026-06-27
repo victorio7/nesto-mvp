@@ -629,7 +629,7 @@ export const demoAutonomySettings: AutonomySettings = {
 export const demoSubscription: AgencySubscription = {
   id: "subscription-demo",
   agency_id: demoAgency.id,
-  plan_name: "Nesto Assistant Immobilier",
+  plan_name: "Clapy Assistant Immobilier",
   monthly_price: 99,
   commitment_months: 6,
   status: "simulated",

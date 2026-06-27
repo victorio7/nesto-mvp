@@ -7,7 +7,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { getClientAccessState } from "@/lib/client-access-state";
 import { NESTO_WHATSAPP_CONTACT_URL } from "@/lib/nesto-contact";
 import { getInstallationData, type SimpleInstallStatus } from "@/lib/installation-data";
-import { getNestoData } from "@/lib/nesto-data";
+import { getClapyData } from "@/lib/nesto-data";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +23,7 @@ export default async function SourcesPage() {
   const accessState = await getClientAccessState();
   if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
 
-  const [installation, nestoData] = await Promise.all([getInstallationData(), getNestoData()]);
+  const [installation, nestoData] = await Promise.all([getInstallationData(), getClapyData()]);
   const calendarStatus = statusFromLiveConnection(nestoData.connections.find((item) => item.integration_type === "google_calendar")?.status);
   const connections: ClientConnection[] = [
     {
@@ -35,14 +35,14 @@ export default async function SourcesPage() {
     },
     {
       title: "WhatsApp agent",
-      description: "Le numero ou Nesto vous envoie les alertes importantes.",
+      description: "Le numero ou Clapy vous envoie les alertes importantes.",
       status: installation.whatsappAgent.status,
       icon: MessageCircle,
       detail: installation.whatsappAgent.phone
     },
     {
       title: "Site agence",
-      description: "La source que Nesto surveille pour detecter les nouveaux biens.",
+      description: "La source que Clapy surveille pour detecter les nouveaux biens.",
       status: installation.website.status,
       icon: Globe2,
       detail: safeClientDetail(installation.website.websiteUrl, "Adresse recue")
@@ -80,17 +80,17 @@ export default async function SourcesPage() {
     <AppShell>
       <PageHeader
         title="Connexions"
-        description="Verifiez simplement les outils relies a Nesto. Si une connexion manque, l'equipe Nesto vous accompagne."
+        description="Verifiez simplement les outils relies a Clapy. Si une connexion manque, l'equipe Clapy vous accompagne."
       />
 
       {installation.error ? (
         <p className="mb-5 rounded-md border border-[#fde68a] bg-[#fffbeb] p-3 text-sm font-semibold text-[#92400e]">
-          Certaines connexions ne sont pas encore synchronisees. L'equipe Nesto garde le suivi de votre installation.
+          Certaines connexions ne sont pas encore synchronisees. L'equipe Clapy garde le suivi de votre installation.
         </p>
       ) : null}
 
       <div className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
-        <Panel title="Vos connexions Nesto">
+        <Panel title="Vos connexions Clapy">
           <div className="grid gap-3">
             {connections.map((connection) => (
               <ConnectionCard connection={connection} key={connection.title} />
@@ -100,9 +100,9 @@ export default async function SourcesPage() {
 
         <Panel title="Besoin d'une connexion en plus ?">
           <div className="rounded-md border border-wood/25 bg-[#fffaf0] p-4">
-            <p className="text-sm font-black text-ink">Nesto s'occupe de la partie technique avec vous.</p>
+            <p className="text-sm font-black text-ink">Clapy s'occupe de la partie technique avec vous.</p>
             <p className="mt-2 text-sm font-semibold leading-6 text-gray-700">
-              Vous n'avez pas besoin de configurer quoi que ce soit seul. Dites a l'equipe Nesto quelle connexion manque, et nous vous aidons a la finaliser.
+              Vous n'avez pas besoin de configurer quoi que ce soit seul. Dites a l'equipe Clapy quelle connexion manque, et nous vous aidons a la finaliser.
             </p>
             <a
               className="focus-ring mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-md bg-pine px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#185848]"
@@ -110,7 +110,7 @@ export default async function SourcesPage() {
               rel="noreferrer"
               target="_blank"
             >
-              <Send size={16} /> Demander l'aide de l'equipe Nesto
+              <Send size={16} /> Demander l'aide de l'équipe Clapy
             </a>
           </div>
         </Panel>
@@ -144,7 +144,7 @@ function ConnectionCard({ connection }: { connection: ClientConnection }) {
           rel="noreferrer"
           target="_blank"
         >
-          Demander l'aide de l'equipe Nesto
+          Demander l'aide de l'équipe Clapy
         </a>
       ) : null}
     </div>

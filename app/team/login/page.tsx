@@ -21,7 +21,7 @@ export default async function TeamLoginPage({
             <Bot size={22} />
           </span>
           <div>
-            <h1 className="text-2xl font-black text-ink">Accès équipe Nesto</h1>
+            <h1 className="text-2xl font-black text-ink">Accès équipe Clapy</h1>
             <p className="mt-1 text-sm font-semibold text-gray-600">Espace interne réservé.</p>
           </div>
         </div>
@@ -31,7 +31,7 @@ export default async function TeamLoginPage({
             <div className="flex gap-3">
               <LockKeyhole className="shrink-0 text-wood" size={20} />
               <div>
-                <h2 className="font-black">Accès réservé à l’équipe Nesto</h2>
+                <h2 className="font-black">Accès réservé à l’équipe Clapy</h2>
                 <p className="mt-2 text-sm font-semibold leading-6 text-gray-700">
                   Cette zone interne est désactivée sur cet environnement.
                 </p>

@@ -66,7 +66,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   await supabase.from("agency_subscriptions").upsert(
     {
       agency_id: agencyId,
-      plan_name: "Nesto Assistant Immobilier",
+      plan_name: "Clapy Assistant Immobilier",
       monthly_price: 99,
       commitment_months: 6,
       status: "active",
@@ -93,7 +93,7 @@ async function upsertSubscriptionFromStripe(subscription: Stripe.Subscription) {
   await supabase.from("agency_subscriptions").upsert(
     {
       agency_id: agencyId,
-      plan_name: subscription.metadata?.plan_name || "Nesto Assistant Immobilier",
+      plan_name: subscription.metadata?.plan_name || "Clapy Assistant Immobilier",
       monthly_price: 99,
       commitment_months: Number(subscription.metadata?.commitment_months ?? 6),
       status: normalizeStripeStatus(subscription.status),

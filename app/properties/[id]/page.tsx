@@ -6,14 +6,14 @@ import { PageHeader } from "@/components/PageHeader";
 import { Panel } from "@/components/Panel";
 import { StatusBadge } from "@/components/StatusBadge";
 import { getClientAccessState } from "@/lib/client-access-state";
-import { getNestoData } from "@/lib/nesto-data";
+import { getClapyData } from "@/lib/nesto-data";
 
 export default async function PropertyDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const accessState = await getClientAccessState();
   if (accessState.status !== "installed") return <ClientWaitingScreen firstName={accessState.firstName} />;
 
   const { id } = await params;
-  const data = await getNestoData();
+  const data = await getClapyData();
   const property = data.properties.find((item) => item.id === id);
   if (!property) notFound();
 
@@ -69,7 +69,7 @@ export default async function PropertyDetailPage({ params }: { params: Promise<{
   );
 }
 
-function getContactName(contactId: string, data: Awaited<ReturnType<typeof getNestoData>>) {
+function getContactName(contactId: string, data: Awaited<ReturnType<typeof getClapyData>>) {
   const contact = data.contacts.find((item) => item.id === contactId);
   return contact ? `${contact.first_name} ${contact.last_name}`.trim() : "Prospect";
 }

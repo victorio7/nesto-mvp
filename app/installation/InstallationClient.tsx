@@ -264,7 +264,7 @@ function buildSteps(data: InstallationData): WizardStep[] {
     {
       key: "whatsapp_agent",
       title: "WhatsApp agent",
-      description: "Pour recevoir les alertes Nesto.",
+      description: "Pour recevoir les alertes Clapy.",
       status: data.whatsappAgent.status,
       icon: MessageCircle,
       primaryLabel: "Continuer",

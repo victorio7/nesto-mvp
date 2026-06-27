@@ -104,11 +104,11 @@ function runProspectMessageScenario(): SimulatorResponse {
     scenario: "prospect_message",
     prospectConversation: [
       { from: "Prospect", text: prospectMessage, channel: "whatsapp_prospect" },
-      { from: "Nesto", text: messages[1].raw_content, channel: "whatsapp_prospect" }
+      { from: "Clapy", text: messages[1].raw_content, channel: "whatsapp_prospect" }
     ],
     agentConversation: [
       {
-        from: "Nesto",
+        from: "Clapy",
         text: `Nouveau prospect cree depuis le WhatsApp professionnel : Sarah M. Score ${contact.seriousness_score}/100. Infos manquantes : ${contact.missing_fields.join(", ") || "aucune"}.`,
         channel: "whatsapp_agent"
       }
@@ -141,7 +141,7 @@ function runCallSummaryScenario(): SimulatorResponse {
     agentConversation: [
       { from: "Agent", text: callSummary, channel: "whatsapp_agent" },
       {
-        from: "Nesto",
+        from: "Clapy",
         text: "Fiche Sarah creee. Prospect chaud. Je surveille les F3 a Punaauia jusqu'a 220 000 F et je vous alerte des qu'un bien correspond.",
         channel: "whatsapp_agent"
       }
@@ -172,7 +172,7 @@ function runPersonalPropertyScenario(): SimulatorResponse {
     agentConversation: [
       { from: "Site agence", text: personalPropertyText, channel: "system" },
       {
-        from: "Nesto",
+        from: "Clapy",
         text: `Nouveau bien detecte : F3 Punaauia Taapuna, 210 000 F. Sarah M. correspond a ${match.score} %. Voulez-vous lui envoyer une relance ? Repondez 1 pour valider, 2 pour details, 3 pour refuser.`,
         channel: "whatsapp_agent"
       }
@@ -211,17 +211,17 @@ function runColleaguePropertyScenario(): SimulatorResponse {
     prospectConversation: [],
     agentConversation: [
       { from: "Site agence", text: colleaguePropertyText, channel: "system" },
-      { from: "Nesto", text: notification.agent_message, channel: "whatsapp_agent" }
+      { from: "Clapy", text: notification.agent_message, channel: "whatsapp_agent" }
     ],
     result: {
       action: "Bien agence cree, opportunite de collaboration detectee, action proposee",
       records: { contact, property, match, ai_action: action },
       timeline: [
         "Marc ajoute un bien sur le site de l'agence",
-        "Nesto enregistre le bien comme bien agence",
-        "Nesto compare ce bien avec les prospects personnels de Maeva",
+        "Clapy enregistre le bien comme bien agence",
+        "Clapy compare ce bien avec les prospects personnels de Maeva",
         "Sarah M. ressort avec un score de compatibilite eleve",
-        "Nesto alerte Maeva sur son WhatsApp interne"
+        "Clapy alerte Maeva sur son WhatsApp interne"
       ],
       details: notification
     }
@@ -243,12 +243,12 @@ function runAgentValidationScenario(rawCommand = "1"): SimulatorResponse {
 
   return {
     scenario: "agent_command_validate",
-    prospectConversation: validated ? [{ from: "Nesto", text: followup, channel: "whatsapp_prospect" }] : [],
+    prospectConversation: validated ? [{ from: "Clapy", text: followup, channel: "whatsapp_prospect" }] : [],
     agentConversation: [
       ...base.agentConversation,
       { from: "Agent", text: rawCommand, channel: "whatsapp_agent" },
       {
-        from: "Nesto",
+        from: "Clapy",
         text: validated
           ? "Action validee. Relance preparee en simulation et historique mis a jour."
           : `Commande comprise : ${interpreted.intent}. Aucune relance envoyee dans cette simulation.`,
@@ -293,7 +293,7 @@ function runAgentDetailsScenario(rawCommand = "details"): SimulatorResponse {
       ...base.agentConversation,
       { from: "Agent", text: rawCommand, channel: "whatsapp_agent" },
       {
-        from: "Nesto",
+        from: "Clapy",
         text:
           "Details : Sarah M. cherche un F3 a Punaauia, budget maximum 220 000 F, CDI, pas d'animaux, entree juillet. Le bien de Marc est un F3 a Punaauia Taapuna a 210 000 F. Score 94 %. Point de vigilance : dossier a confirmer.",
         channel: "whatsapp_agent"
@@ -305,7 +305,7 @@ function runAgentDetailsScenario(rawCommand = "details"): SimulatorResponse {
       timeline: [
         ...base.result.timeline,
         "L'agent demande les details",
-        "Nesto affiche la fiche prospect, le bien, les raisons du match et le point de vigilance"
+        "Clapy affiche la fiche prospect, le bien, les raisons du match et le point de vigilance"
       ],
       details: {
         prospect: contact,
@@ -331,13 +331,13 @@ function runCompleteFlowScenario(): SimulatorResponse {
       records: validation.result.records,
       timeline: [
         "1. L'agent envoie le resume d'appel Sarah",
-        "2. Nesto cree la fiche Sarah dans la base personnelle de l'agent",
+        "2. Clapy cree la fiche Sarah dans la base personnelle de l'agent",
         "3. Marc ajoute un F3 a Punaauia sur le site agence",
-        "4. Nesto detecte le bien de Marc comme bien de l'agence",
-        "5. Nesto matche le bien avec Sarah",
-        "6. Nesto alerte l'agent sur WhatsApp interne",
+        "4. Clapy detecte le bien de Marc comme bien de l'agence",
+        "5. Clapy matche le bien avec Sarah",
+        "6. Clapy alerte l'agent sur WhatsApp interne",
         "7. L'agent repond 1",
-        "8. Nesto prepare la relance et enregistre l'action"
+        "8. Clapy prepare la relance et enregistre l'action"
       ],
       details: {
         call_summary: call.result.details,

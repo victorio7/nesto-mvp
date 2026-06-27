@@ -282,10 +282,10 @@ async function savePropertySources(
 
 function successMessageFor(stepKey: string) {
   if (stepKey === "final_test") {
-    return "Informations recues. L'equipe Nesto verifie votre installation et vous accompagnera pour le test final. Delai moyen : moins de 24h.";
+    return "Informations recues. L'equipe Clapy verifie votre installation et vous accompagnera pour le test final. Delai moyen : moins de 24h.";
   }
 
-  return "Informations recues. L'equipe Nesto les verifiera pour finaliser votre installation.";
+  return "Informations recues. L'equipe Clapy les verifiera pour finaliser votre installation.";
 }
 
 async function upsertPropertySource(

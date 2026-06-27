@@ -77,7 +77,7 @@ export function OnboardingClient() {
           padding: "2rem"
         }}>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: "#111827", margin: 0 }}>
-            Parfait ! Bienvenue dans Nesto.
+            Parfait ! Bienvenue dans Clapy.
           </h1>
           <p style={{
             fontSize: 14,
@@ -195,7 +195,7 @@ export function OnboardingClient() {
             {currentStep.key === "whatsapp_personal" && (
               <>
                 <p style={{ fontSize: 14, color: "#5a5a52", margin: "0 0 1rem" }}>
-                  Votre numéro personnel pour recevoir les alertes de Nesto.
+                  Votre numéro personnel pour recevoir les alertes de Clapy.
                 </p>
                 <input
                   type="tel"

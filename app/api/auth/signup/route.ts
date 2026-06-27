@@ -26,13 +26,13 @@ export async function POST(request: Request) {
     const existingAccount = await findExistingSignupAccount(supabase, parsed.value.email, parsed.value.phone);
     if (!existingAccount.ok) {
       return NextResponse.json(
-        { error: "Une erreur est survenue. Contactez l’équipe Nesto si le problème continue." },
+        { error: "Une erreur est survenue. Contactez l’équipe Clapy si le problème continue." },
         { status: 500 }
       );
     }
     if (existingAccount.exists) {
       const error = existingAccount.reason === "phone"
-        ? "Ce numéro WhatsApp est déjà utilisé. Connectez-vous ou contactez l’équipe Nesto."
+        ? "Ce numéro WhatsApp est déjà utilisé. Connectez-vous ou contactez l’équipe Clapy."
         : "Ce compte existe déjà. Connectez-vous.";
       return NextResponse.json({ error }, { status: 409 });
     }
@@ -342,7 +342,7 @@ async function ensureSimulatedTrial(supabase: SupabaseAdmin, agencyId: string) {
   const { error } = await supabase.from("agency_subscriptions").upsert(
     {
       agency_id: agencyId,
-      plan_name: "Nesto Assistant Immobilier",
+      plan_name: "Clapy Assistant Immobilier",
       monthly_price: 99,
       commitment_months: 0,
       status: "simulated",
@@ -370,7 +370,7 @@ function normalizePhone(phone: string) {
 }
 
 function logSignupError(step: string, error: unknown) {
-  console.error("Erreur signup Nesto", {
+  console.error("Erreur signup Clapy", {
     step,
     error: getErrorMessage(error)
   });

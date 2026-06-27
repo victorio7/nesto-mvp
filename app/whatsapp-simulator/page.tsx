@@ -7,7 +7,7 @@ export default function WhatsAppSimulatorPage() {
     <AppShell>
       <PageHeader
         title="Simulateur WhatsApp"
-        description="Ce simulateur permet de tester le fonctionnement avant la connexion reelle a WhatsApp. C'est un outil de demonstration interne : le client final pilotera Nesto directement depuis WhatsApp."
+        description="Ce simulateur permet de tester le fonctionnement avant la connexion reelle a WhatsApp. C'est un outil de demonstration interne : le client final pilotera Clapy directement depuis WhatsApp."
       />
       <WhatsAppSimulatorClient />
     </AppShell>

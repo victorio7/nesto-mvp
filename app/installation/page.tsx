@@ -20,8 +20,8 @@ export default async function InstallationPage({
       <div className="mx-auto flex max-w-3xl flex-col gap-6">
         <header className="text-center">
           <Link className="inline-flex items-center gap-2 text-sm font-black text-pine" href="/">
-            <span className="grid size-9 place-items-center rounded-md bg-pine text-white">N</span>
-            Nesto
+            <span className="grid size-9 place-items-center rounded-md bg-pine text-white">C</span>
+            Clapy
           </Link>
           <p className="mt-5 text-xs font-black uppercase tracking-normal text-wood">Installation rapide</p>
           <h1 className="mt-2 text-3xl font-black text-ink sm:text-4xl">Connectons vos outils.</h1>
@@ -39,7 +39,7 @@ export default async function InstallationPage({
         ) : null}
         {data.error ? (
           <p className="mx-auto w-full max-w-2xl rounded-md border border-[#fde68a] bg-white p-3 text-center text-sm font-semibold text-[#92400e]">
-            Certaines informations ne sont pas encore synchronisées. Vous pouvez continuer, Nesto gardera un mode simple.
+            Certaines informations ne sont pas encore synchronisées. Vous pouvez continuer, Clapy gardera un mode simple.
           </p>
         ) : null}
 
@@ -54,7 +54,7 @@ export default async function InstallationPage({
 function InstalledCard() {
   return (
     <section className="mx-auto w-full max-w-2xl rounded-lg border border-line bg-white p-6 text-center shadow-panel sm:p-8">
-      <p className="text-xs font-black uppercase tracking-normal text-wood">Nesto est installé</p>
+      <p className="text-xs font-black uppercase tracking-normal text-wood">Clapy est installé</p>
       <h2 className="mt-2 text-2xl font-black text-ink">Votre assistant est déjà prêt.</h2>
       <p className="mx-auto mt-3 max-w-md text-sm font-semibold leading-6 text-gray-700">
         Vous pouvez modifier vos informations ou demander l'aide de l'équipe pour ajouter une connexion.
@@ -78,7 +78,7 @@ function InstalledCard() {
           className="focus-ring inline-flex min-h-10 items-center justify-center rounded-md bg-pine px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#185848]"
           href="/dashboard"
         >
-          Retour à ma mémoire Nesto
+          Retour à ma mémoire Clapy
         </a>
       </div>
     </section>

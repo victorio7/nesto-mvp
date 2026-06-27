@@ -13,7 +13,7 @@ export default async function AnalyzeMessagePage() {
     <AppShell>
       <PageHeader
         title="Test d'analyse de message"
-        description="Page interne de test. En production, Nesto analyse automatiquement les nouveaux echanges depuis WhatsApp."
+        description="Page interne de test. En production, Clapy analyse automatiquement les nouveaux echanges depuis WhatsApp."
       />
       <Panel title="Analyse IA">
         <AnalyzeMessageForm />
