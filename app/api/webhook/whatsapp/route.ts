@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSupabaseAdminClientOrNull } from "@/lib/supabase/admin";
+import { generateResponse } from "@/lib/ai/message-responder";
+import { sendWhatsAppMessage } from "@/lib/twilio/whatsapp-sender";
 
 export async function POST(request: NextRequest) {
   try {
@@ -223,6 +225,18 @@ export async function POST(request: NextRequest) {
         contact_id: contactId
       });
 
+      // Send auto-reply asynchronously (don't block the webhook response)
+      processAutoReply({
+        senderPhone,
+        messageContent,
+        conversationId,
+        contactId,
+        agencyId: agency.id,
+        supabase,
+      }).catch((error) => {
+        console.error("[WhatsApp Webhook] Auto-reply processing failed:", error);
+      });
+
       return NextResponse.json({ success: true, message: "WhatsApp message received" });
     }
 
@@ -237,6 +251,84 @@ export async function POST(request: NextRequest) {
       { error: "Webhook processing failed" },
       { status: 500 }
     );
+  }
+}
+
+async function processAutoReply(options: {
+  senderPhone: string;
+  messageContent: string;
+  conversationId: string;
+  contactId: string;
+  agencyId: string;
+  supabase: any;
+}) {
+  const {
+    senderPhone,
+    messageContent,
+    conversationId,
+    contactId,
+    agencyId,
+    supabase,
+  } = options;
+
+  try {
+    console.log("[WhatsApp AutoReply] Generating response...");
+
+    // Generate response with Claude
+    const response = await generateResponse({
+      incomingMessage: messageContent,
+    });
+
+    console.log("[WhatsApp AutoReply] Response generated:", {
+      responseLength: response.length,
+      preview: response.substring(0, 50),
+    });
+
+    // Send response via Twilio
+    console.log("[WhatsApp AutoReply] Sending message via Twilio...");
+    const sendResult = await sendWhatsAppMessage({
+      to: senderPhone,
+      message: response,
+    });
+
+    if (!sendResult.success) {
+      console.error("[WhatsApp AutoReply] Failed to send message:", sendResult.error);
+      return;
+    }
+
+    console.log("[WhatsApp AutoReply] Message sent successfully:", {
+      sid: sendResult.sid,
+    });
+
+    // Store response in database
+    console.log("[WhatsApp AutoReply] Storing response in database...");
+    const { error: responseInsertError } = await supabase
+      .from("messages")
+      .insert({
+        agency_id: agencyId,
+        conversation_id: conversationId,
+        contact_id: contactId,
+        direction: "outbound",
+        sender_type: "nesto",
+        raw_content: response,
+        structured_data: {
+          type: "auto_reply",
+          twilio_sid: sendResult.sid,
+          incoming_message: messageContent.substring(0, 200),
+        },
+      });
+
+    if (responseInsertError) {
+      console.error("[WhatsApp AutoReply] Failed to store response:", responseInsertError);
+      return;
+    }
+
+    console.log("[WhatsApp AutoReply] ✅ Response processed and stored successfully");
+  } catch (error) {
+    console.error("[WhatsApp AutoReply] Unexpected error:", {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
   }
 }
 
