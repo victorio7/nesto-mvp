@@ -1,13 +1,13 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
-if (!process.env.ANTHROPIC_API_KEY) {
+if (!process.env.OPENAI_API_KEY) {
   console.error(
-    "[MessageResponder] ANTHROPIC_API_KEY is not configured. Auto-reply will fail."
+    "[MessageResponder] OPENAI_API_KEY is not configured. Auto-reply will fail."
   );
 }
 
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY || "",
+const client = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY || "",
 });
 
 const SYSTEM_PROMPT = `Tu es Clapy, l'assistant commercial immobilier. Tu aides les prospects à préciser leur recherche immobilière.
@@ -59,7 +59,11 @@ export async function generateResponse(
     contactInfo = {},
   } = options;
 
-  const messages: Anthropic.Messages.MessageParam[] = [
+  const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+    {
+      role: "system",
+      content: SYSTEM_PROMPT,
+    },
     ...conversationHistory,
     {
       role: "user",
@@ -67,25 +71,23 @@ export async function generateResponse(
     },
   ];
 
-  console.log("[MessageResponder] Generating response for:", {
+  console.log("[MessageResponder] Generating response with GPT-4o-mini:", {
     incomingMessage: incomingMessage.substring(0, 60),
     historyLength: conversationHistory.length,
     contactPhone: contactInfo.phone,
   });
 
   try {
-    const message = await client.messages.create({
-      model: "claude-sonnet-4-6",
+    const response = await client.chat.completions.create({
+      model: "gpt-4o-mini",
       max_tokens: 250,
-      system: SYSTEM_PROMPT,
       messages: messages,
     });
 
-    const responseText =
-      message.content[0].type === "text" ? message.content[0].text : "";
+    const responseText = response.choices[0]?.message?.content || "";
 
     if (!responseText.trim()) {
-      throw new Error("Empty response from Claude API");
+      throw new Error("Empty response from OpenAI API");
     }
 
     console.log("[MessageResponder] Generated response:", {
@@ -122,8 +124,8 @@ Message: "${message}"
 Réponds en JSON: {"type": "...", "confidence": 0.0-1.0}`;
 
   try {
-    const message_response = await client.messages.create({
-      model: "claude-sonnet-4-6",
+    const response = await client.chat.completions.create({
+      model: "gpt-4o-mini",
       max_tokens: 100,
       messages: [
         {
@@ -133,10 +135,7 @@ Réponds en JSON: {"type": "...", "confidence": 0.0-1.0}`;
       ],
     });
 
-    const responseText =
-      message_response.content[0].type === "text"
-        ? message_response.content[0].text
-        : "{}";
+    const responseText = response.choices[0]?.message?.content || "{}";
     const analysis = JSON.parse(responseText);
 
     return analysis;
