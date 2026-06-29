@@ -349,7 +349,7 @@ export async function GET(request: NextRequest) {
   if (hubMode === "subscribe" && hubVerifyToken === verifyToken && hubChallenge) {
     console.log("[WhatsApp Webhook] ✅ Webhook verification successful");
     // Return plain text response as expected by Meta
-    return new NextResponse(hubChallenge, {
+    return new Response(hubChallenge, {
       status: 200,
       headers: { "Content-Type": "text/plain" },
     });
@@ -361,7 +361,8 @@ export async function GET(request: NextRequest) {
     hasChallenge: !!hubChallenge,
   });
 
-  return new NextResponse("Verification token mismatch", {
+  return new Response("Verification token mismatch", {
     status: 403,
+    headers: { "Content-Type": "text/plain" },
   });
 }
