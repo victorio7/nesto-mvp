@@ -333,15 +333,35 @@ async function processAutoReply(options: {
 }
 
 export async function GET(request: NextRequest) {
-  // Twilio webhook validation
+  // Meta WhatsApp webhook verification
   const hubVerifyToken = request.nextUrl.searchParams.get("hub.verify_token");
   const hubChallenge = request.nextUrl.searchParams.get("hub.challenge");
+  const hubMode = request.nextUrl.searchParams.get("hub.mode");
 
-  const verifyToken = process.env.TWILIO_WEBHOOK_SECRET || "";
+  console.log("[WhatsApp Webhook] GET request for verification:", {
+    hubMode,
+    hubVerifyToken: hubVerifyToken ? "***" : undefined,
+    hubChallenge: hubChallenge ? `${hubChallenge.substring(0, 20)}...` : undefined,
+  });
 
-  if (hubVerifyToken === verifyToken) {
-    return NextResponse.json(hubChallenge, { status: 200 });
+  const verifyToken = process.env.META_VERIFY_TOKEN || "clapy2026";
+
+  if (hubMode === "subscribe" && hubVerifyToken === verifyToken && hubChallenge) {
+    console.log("[WhatsApp Webhook] ✅ Webhook verification successful");
+    // Return plain text response as expected by Meta
+    return new NextResponse(hubChallenge, {
+      status: 200,
+      headers: { "Content-Type": "text/plain" },
+    });
   }
 
-  return NextResponse.json({ error: "Invalid verify token" }, { status: 403 });
+  console.warn("[WhatsApp Webhook] ❌ Webhook verification failed:", {
+    modeMatch: hubMode === "subscribe",
+    tokenMatch: hubVerifyToken === verifyToken,
+    hasChallenge: !!hubChallenge,
+  });
+
+  return new NextResponse("Verification token mismatch", {
+    status: 403,
+  });
 }
